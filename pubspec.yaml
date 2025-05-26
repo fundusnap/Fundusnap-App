@@ -38,6 +38,11 @@ dependencies:
   # supabase_flutter: ^2.9.0
   dio: ^5.8.0+1
   google_fonts: ^6.2.1
+  gap: ^3.0.1
+  camera: ^0.11.1
+  equatable: ^2.0.7
+  flutter_bloc: ^9.1.1
+  video_player: ^2.9.5
 
 dev_dependencies:
   flutter_test:

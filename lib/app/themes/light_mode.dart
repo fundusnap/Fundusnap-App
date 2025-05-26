@@ -9,7 +9,7 @@ final ColorScheme sugeyeLightColor = ColorScheme.fromSeed(
 
 final ThemeData sugeyeLightTheme = ThemeData().copyWith(
   colorScheme: sugeyeLightColor,
-  textTheme: GoogleFonts.dmSansTextTheme(),
+  textTheme: GoogleFonts.lexendTextTheme(),
   appBarTheme: const AppBarTheme(
     toolbarHeight: 65,
     backgroundColor: AppColors.haiti,

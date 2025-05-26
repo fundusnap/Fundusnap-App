@@ -31,7 +31,7 @@ class LayoutScaffoldWithNav extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(appBarTitle)),
+      appBar: AppBar(title: Text(appBarTitle), centerTitle: true),
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
         destinations: destinations

@@ -47,6 +47,7 @@ class RoutingService {
               ),
             ],
           ),
+          // ? patients screen
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -56,6 +57,7 @@ class RoutingService {
               ),
             ],
           ),
+          // ? profile screen
           StatefulShellBranch(
             routes: [
               GoRoute(
