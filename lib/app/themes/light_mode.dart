@@ -9,24 +9,36 @@ final ColorScheme sugeyeLightColor = ColorScheme.fromSeed(
 
 final ThemeData sugeyeLightTheme = ThemeData().copyWith(
   colorScheme: sugeyeLightColor,
-  textTheme: GoogleFonts.lexendTextTheme(),
+  // textTheme: GoogleFonts.lexendTextTheme(),
+  textTheme: GoogleFonts.plusJakartaSansTextTheme(),
+
   appBarTheme: const AppBarTheme(
     toolbarHeight: 65,
     backgroundColor: AppColors.angelBlue,
-    foregroundColor: AppColors.white,
+    // backgroundColor: AppColors.white,
+    foregroundColor: AppColors.bleachedCedar,
+    titleTextStyle: TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: AppColors.bleachedCedar,
+    ),
   ),
   navigationBarTheme: NavigationBarThemeData(
     backgroundColor: AppColors.angelBlue,
-    indicatorColor: AppColors.bittersweet,
+    indicatorColor: AppColors.bleachedCedar,
+    // indicatorColor: AppColors.mint,
     iconTheme: WidgetStateProperty.resolveWith(
       (Set<WidgetState> states) => states.contains(WidgetState.selected)
+          // ? (const IconThemeData(color: AppColors.angelBlue))
           ? (const IconThemeData(color: AppColors.angelBlue))
-          : (const IconThemeData(color: AppColors.white)),
+          // : (const IconThemeData(color: AppColors.gray)),
+          : (const IconThemeData(color: AppColors.bleachedCedar)),
     ),
     labelTextStyle: WidgetStateProperty.resolveWith(
       (Set<WidgetState> states) => states.contains(WidgetState.selected)
-          ? const TextStyle(color: AppColors.bittersweet)
-          : const TextStyle(color: AppColors.white),
+          ? const TextStyle(color: AppColors.bleachedCedar)
+          // : const TextStyle(color: AppColors.gray),
+          : const TextStyle(color: AppColors.bleachedCedar),
     ),
   ),
 

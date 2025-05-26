@@ -19,7 +19,7 @@ class LayoutScaffoldWithNav extends StatelessWidget {
 
     switch (shellLocation) {
       case Routes.home:
-        appBarTitle = "Home";
+        appBarTitle = "Fundusnap";
       case Routes.scan:
         appBarTitle = "Scan";
       case Routes.patients:
