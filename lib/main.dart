@@ -12,8 +12,10 @@ void _logError(String code, String? message) {
 List<CameraDescription> cameras = <CameraDescription>[];
 
 void main() async {
+  // _logError(code, message)
   WidgetsFlutterBinding.ensureInitialized();
   GoRouter router = RoutingService().router;
+  print("hahahah");
 
   try {
     cameras = await availableCameras();

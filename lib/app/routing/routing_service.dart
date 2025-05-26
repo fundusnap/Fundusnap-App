@@ -33,17 +33,20 @@ class RoutingService {
               GoRoute(
                 name: Routes.home,
                 path: Routes.home,
-                builder: (context, state) => HomeScreen(),
+                builder: (context, state) => const HomeScreen(),
               ),
             ],
           ),
           // ? scan screen
+          // * scan screen
+          // ! scan screen
+          // TODO scan screen
           StatefulShellBranch(
             routes: [
               GoRoute(
                 name: Routes.scan,
                 path: Routes.scan,
-                builder: (context, state) => ScanScreen(),
+                builder: (context, state) => const ScanScreen(),
               ),
             ],
           ),
@@ -53,7 +56,7 @@ class RoutingService {
               GoRoute(
                 name: Routes.patients,
                 path: Routes.patients,
-                builder: (context, state) => PatientsScreen(),
+                builder: (context, state) => const PatientsScreen(),
               ),
             ],
           ),
@@ -63,7 +66,7 @@ class RoutingService {
               GoRoute(
                 name: Routes.profile,
                 path: Routes.profile,
-                builder: (context, state) => ProfileScreen(),
+                builder: (context, state) => const ProfileScreen(),
               ),
             ],
           ),

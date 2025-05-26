@@ -3,7 +3,6 @@ import 'package:gap/gap.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -17,9 +16,9 @@ class HomeScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          Gap(16),
-          Text("Start"),
-          ElevatedButton(child: (Text("Start Scan")), onPressed: () {}),
+          const Gap(16),
+          const Text("Start"),
+          ElevatedButton(child: (const Text("Start Scan")), onPressed: () {}),
         ],
       ),
     );

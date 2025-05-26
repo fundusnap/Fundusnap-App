@@ -2,8 +2,9 @@ import 'package:flutter/widgets.dart';
 
 class AppColors {
   AppColors._();
-  //? haiti/dark blue color
-  static const Color haiti = Color.fromARGB(255, 25, 25, 63);
+  //? angel blue color
+  // ? B2D1E5
+  static const Color angelBlue = Color.fromARGB(255, 178, 209, 229);
 
   //?  deluge/purple color
   static const Color deluge = Color.fromARGB(255, 105, 105, 175);
