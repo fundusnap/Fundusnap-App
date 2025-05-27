@@ -15,7 +15,7 @@ void main() async {
   // _logError(code, message)
   WidgetsFlutterBinding.ensureInitialized();
   GoRouter router = RoutingService().router;
-  print("hahahah");
+  // print("hahahah");
 
   try {
     cameras = await availableCameras();

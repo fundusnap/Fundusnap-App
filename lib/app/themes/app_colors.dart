@@ -2,9 +2,11 @@ import 'package:flutter/widgets.dart';
 
 class AppColors {
   AppColors._();
+
+  static const Color veniceBlue = Color.fromARGB(255, 11, 83, 130);
+
   //? angel blue color (primary)
   // ? B2D1E5
-  // static const Color angelBlue = Color.fromARGB(255, 178, 209, 229);
   static const Color angelBlue = Color.fromARGB(255, 157, 197, 224);
 
   //? bleached cedar (secondary)
