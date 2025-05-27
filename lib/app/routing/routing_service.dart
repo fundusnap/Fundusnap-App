@@ -5,7 +5,9 @@ import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/features/home/presentation/screens/home_screen.dart';
 import 'package:sugeye/features/patients/screens/patients_screen.dart';
 import 'package:sugeye/features/profile/presentation/screens/profile_screen.dart';
+import 'package:sugeye/features/scan/presentation/screens/camera_screen.dart';
 import 'package:sugeye/features/scan/presentation/screens/scan_screen.dart';
+import 'package:sugeye/features/scan/presentation/screens/upload_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: "root",
@@ -38,8 +40,6 @@ class RoutingService {
             ],
           ),
           // ? scan screen
-          // * scan screen
-          // ! scan screen
           // TODO scan screen
           StatefulShellBranch(
             routes: [
@@ -47,6 +47,20 @@ class RoutingService {
                 name: Routes.scan,
                 path: Routes.scan,
                 builder: (context, state) => const ScanScreen(),
+                routes: <RouteBase>[
+                  GoRoute(
+                    parentNavigatorKey: _rootNavigatorKey,
+                    name: Routes.camera,
+                    path: Routes.camera,
+                    builder: (context, state) => const CameraScreen(),
+                  ),
+                  GoRoute(
+                    parentNavigatorKey: _rootNavigatorKey,
+                    name: Routes.upload,
+                    path: Routes.upload,
+                    builder: (context, state) => const UploadScreen(),
+                  ),
+                ],
               ),
             ],
           ),

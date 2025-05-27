@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:sugeye/app/themes/app_colors.dart';
 
 class RecentScan extends StatelessWidget {
   const RecentScan({

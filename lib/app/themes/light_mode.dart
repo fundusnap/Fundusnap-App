@@ -18,8 +18,8 @@ final ThemeData sugeyeLightTheme = ThemeData().copyWith(
     // backgroundColor: AppColors.white,
     foregroundColor: AppColors.bleachedCedar,
     titleTextStyle: TextStyle(
-      fontSize: 24,
-      fontWeight: FontWeight.bold,
+      fontSize: 30,
+      fontWeight: FontWeight.w500,
       color: AppColors.bleachedCedar,
     ),
   ),

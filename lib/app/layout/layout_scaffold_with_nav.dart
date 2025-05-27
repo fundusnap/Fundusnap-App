@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sugeye/app/layout/destinations.dart';
 import 'package:sugeye/app/routing/routes.dart';
 
@@ -31,8 +32,23 @@ class LayoutScaffoldWithNav extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(appBarTitle), centerTitle: true),
-      body: navigationShell,
+      appBar: AppBar(
+        // titleSpacing: 24,
+        title: Text(
+          appBarTitle,
+          style: TextStyle(
+            fontFamily: appBarTitle == "Fundusnap"
+                ? GoogleFonts.majorMonoDisplay().fontFamily
+                : null,
+            fontWeight: appBarTitle == "Fundusnap" ? FontWeight.bold : null,
+          ),
+        ),
+        centerTitle: appBarTitle == "Fundusnap" ? true : false,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20, bottom: 8, left: 20, right: 20),
+        child: navigationShell,
+      ),
       bottomNavigationBar: NavigationBar(
         destinations: destinations
             .map(
