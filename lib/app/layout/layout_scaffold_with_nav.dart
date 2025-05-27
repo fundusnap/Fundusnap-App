@@ -16,9 +16,10 @@ class LayoutScaffoldWithNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late String appBarTitle;
+    String appBarTitle = "";
 
     switch (shellLocation) {
+      // switch (GoRouterState.of(context).matchedLocation) {
       case Routes.home:
         appBarTitle = "Fundusnap";
       case Routes.scan:
@@ -28,7 +29,7 @@ class LayoutScaffoldWithNav extends StatelessWidget {
       case Routes.profile:
         appBarTitle = "Profile";
       default:
-        "";
+        "Default";
     }
 
     return Scaffold(
@@ -61,6 +62,7 @@ class LayoutScaffoldWithNav extends StatelessWidget {
             .toList(),
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) {
+          print(GoRouterState.of(context).matchedLocation);
           navigationShell.goBranch(index);
         },
       ),

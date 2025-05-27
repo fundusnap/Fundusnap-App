@@ -42,7 +42,7 @@ class ScanScreen extends StatelessWidget {
           backgroundColor: AppColors.veniceBlue,
           textColor: AppColors.white,
           onPressed: () {
-            GoRouter.of(context).goNamed(Routes.camera);
+            GoRouter.of(context).pushNamed(Routes.camera);
           },
         ),
         const SizedBox(height: 20),
@@ -52,7 +52,7 @@ class ScanScreen extends StatelessWidget {
           backgroundColor: AppColors.angelBlue,
           textColor: AppColors.bleachedCedar,
           onPressed: () {
-            GoRouter.of(context).goNamed(Routes.upload);
+            GoRouter.of(context).pushNamed(Routes.upload);
           },
         ),
         const SizedBox(height: 40),
@@ -91,26 +91,6 @@ class ScanScreen extends StatelessWidget {
                 text: 'Try to keep the eye steady and focused during capture.',
               ),
             ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildGuideRow(IconData icon, String text) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 20, color: AppColors.veniceBlue),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 14,
-              color: AppColors.bleachedCedar,
-              height: 1.4,
-            ),
           ),
         ),
       ],

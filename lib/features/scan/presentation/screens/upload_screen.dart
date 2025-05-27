@@ -11,6 +11,6 @@ class UploadScreen extends StatefulWidget {
 class _UploadScreenState extends State<UploadScreen> {
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
+    return const Scaffold(body: Center(child: Text("Upload Screen")));
   }
 }
