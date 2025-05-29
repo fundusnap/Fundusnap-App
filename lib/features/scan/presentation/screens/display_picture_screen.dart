@@ -4,12 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
+import 'package:sugeye/core/services/azure_prediction_service.dart';
 
-class DisplayPictureScreen extends StatelessWidget {
+class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
 
   const DisplayPictureScreen({super.key, required this.imagePath});
 
+  @override
+  State<DisplayPictureScreen> createState() => _DisplayPictureScreenState();
+}
+
+class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +24,7 @@ class DisplayPictureScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Expanded(child: Center(child: Image.file(File(imagePath)))),
+            Expanded(child: Center(child: Image.file(File(widget.imagePath)))),
             const Gap(13),
             Padding(
               padding: const EdgeInsets.all(0),
@@ -51,7 +57,7 @@ class DisplayPictureScreen extends StatelessWidget {
                         vertical: 12,
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       // TODO: Implement what happens when the user confirms the photo.
                       // ? options:
                       // ? 1. Popping this screen and returning the imagePath to CameraScreen,
@@ -59,7 +65,7 @@ class DisplayPictureScreen extends StatelessWidget {
                       // ? 2. Directly navigating to UploadScreen from here with the imagePath.
                       //  ?  e.g., GoRouter.of(context).pushNamed(Routes.upload, extra: imagePath);
                       //?  For now, let's print and pop all the way to scan screen (or where appropriate)
-                      print('Image confirmed: $imagePath');
+                      print('Image confirmed: ${widget.imagePath}. Attempting');
 
                       // Example: Navigate to upload screen (assuming it takes imagePath as argument)
                       // And remove camera and preview screens from stack.
@@ -76,9 +82,46 @@ class DisplayPictureScreen extends StatelessWidget {
                       // Ensure Routes.upload is defined and can accept imagePath.
                       // This will push UploadScreen on top.
                       // context.pushNamed(Routes.upload, extra: imagePath);
-                      GoRouter.of(
-                        context,
-                      ).pop(imagePath); // ? pop and return imagePath
+                      final AzurePredictionService predictionService =
+                          AzurePredictionService();
+                      try {
+                        final File imageFile = File(widget.imagePath);
+                        final Map<String, dynamic>? predictionResult =
+                            await predictionService.predictImage(imageFile);
+
+                        if (predictionResult != null) {
+                          print('-----------------------------------------');
+                          print('✅ Azure Prediction Successful:');
+                          print(predictionResult);
+                          print('-----------------------------------------');
+                          // TODO: Later, you will navigate to a new screen with this result.
+                          // Example: GoRouter.of(context).pushNamed(Routes.results, extra: predictionResult);
+                        } else {
+                          print('❌ Azure Prediction Failed or returned null.');
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Could not get prediction. Please try again.',
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      } catch (e) {
+                        print('❌ Error during prediction call: $e');
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('An error occurred: $e')),
+                          );
+                        }
+                      } finally {
+                        if (context.mounted) {
+                          GoRouter.of(
+                            context,
+                          ).pop(widget.imagePath); // ? pop and return imagePath
+                        }
+                      }
                     },
                   ),
                 ],
