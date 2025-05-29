@@ -125,12 +125,10 @@ class _CameraScreenState extends State<CameraScreen>
       if (mounted) {
         GoRouter.of(
           context,
-        ).pushNamed(Routes.displayPicture, extra: imageFile.path);
-        // .then((value) {
-        //   // ? executes when DisplayPictureScreen is popped.
-        //   // ? maybe re-initialize or refresh camera state if needed ??,
-        //   // ! especially if the user chose "Retake".
-        // });
+        ).pushNamed(Routes.displayPicture, extra: imageFile.path).then((value) {
+          // ? executes when DisplayPictureScreen is popped.
+          // ? maybe re-initialize or refresh camera state if needed ??,
+        }); // ! especially if the user chose "Retake".
       }
     } on CameraException catch (e) {
       if (mounted) {
@@ -279,6 +277,7 @@ class _CameraScreenState extends State<CameraScreen>
       floatingActionButton: _isCameraInitialized && !_isTakingPicture
           ? FloatingActionButton.large(
               onPressed: _takePicture,
+              heroTag: 'cameraScreenFAB',
               backgroundColor: AppColors.angelBlue,
               foregroundColor: AppColors.bleachedCedar,
               tooltip: 'Take Picture',

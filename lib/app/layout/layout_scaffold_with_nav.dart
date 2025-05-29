@@ -17,9 +17,9 @@ class LayoutScaffoldWithNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String appBarTitle = "";
+    print("LayoutScaffoldWithNav building. shellLocation: '$shellLocation'");
 
     switch (shellLocation) {
-      // switch (GoRouterState.of(context).matchedLocation) {
       case Routes.home:
         appBarTitle = "Fundusnap";
       case Routes.scan:

@@ -51,12 +51,12 @@ class DisplayPictureScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       // TODO: Implement what happens when the user confirms the photo.
-                      // This could involve:
-                      // 1. Popping this screen and returning the imagePath to CameraScreen,
-                      //    which then navigates to UploadScreen.
-                      // 2. Directly navigating to UploadScreen from here with the imagePath.
-                      //    e.g., GoRouter.of(context).pushNamed(Routes.upload, extra: imagePath);
-                      // For now, let's print and pop all the way to scan screen (or where appropriate)
+                      // ? options:
+                      // ? 1. Popping this screen and returning the imagePath to CameraScreen,
+                      //  ?  which then navigates to UploadScreen.
+                      // ? 2. Directly navigating to UploadScreen from here with the imagePath.
+                      //  ?  e.g., GoRouter.of(context).pushNamed(Routes.upload, extra: imagePath);
+                      //?  For now, let's print and pop all the way to scan screen (or where appropriate)
                       print('Image confirmed: $imagePath');
 
                       // Example: Navigate to upload screen (assuming it takes imagePath as argument)
@@ -74,12 +74,9 @@ class DisplayPictureScreen extends StatelessWidget {
                       // Ensure Routes.upload is defined and can accept imagePath.
                       // This will push UploadScreen on top.
                       // context.pushNamed(Routes.upload, extra: imagePath);
-
-                      // For demonstration, let's just pop this screen.
-                      // You'll need to decide the exact navigation flow.
                       GoRouter.of(
                         context,
-                      ).pop(imagePath); // Pop and return imagePath
+                      ).pop(imagePath); // ? pop and return imagePath
                     },
                   ),
                 ],
