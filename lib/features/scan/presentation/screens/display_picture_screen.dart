@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
 
@@ -18,8 +19,9 @@ class DisplayPictureScreen extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Expanded(child: Center(child: Image.file(File(imagePath)))),
+            const Gap(13),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
-import 'package:sugeye/features/scan/presentation/screens/display_picture_screen.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -180,99 +179,94 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Capture Fundus Image'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.white),
-          onPressed: () {
-            GoRouter.of(context).pop();
-          },
-        ),
-      ),
-      body: SafeArea(
-        child: _isCameraInitialized && _controller != null
-            ? Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  LayoutBuilder(
-                    builder: (context, constraints) {
+      appBar: AppBar(title: const Text('Capture Fundus Image')),
+      body:
+          // SafeArea(
+          // child:
+          _isCameraInitialized && _controller != null
+          ? Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    print(
+                      "CameraScreen - LayoutBuilder: maxWidth=${constraints.maxWidth}, maxHeight=${constraints.maxHeight}",
+                    );
+
+                    // ? check controller state *inside* LayoutBuilderadf (ijmportant)
+                    if (_controller == null ||
+                        !_controller!.value.isInitialized) {
                       print(
-                        "CameraScreen - LayoutBuilder: maxWidth=${constraints.maxWidth}, maxHeight=${constraints.maxHeight}",
+                        "CameraScreen - LayoutBuilder: Controller not initialized here!",
                       );
-
-                      // ? check controller state *inside* LayoutBuilderadf (ijmportant)
-                      if (_controller == null ||
-                          !_controller!.value.isInitialized) {
-                        print(
-                          "CameraScreen - LayoutBuilder: Controller not initialized here!",
-                        );
-                        return const Center(
-                          child: Text(
-                            "Controller not ready in LayoutBuilder",
-                            style: TextStyle(
-                              color: Colors.red,
-                              backgroundColor: Colors.yellow,
-                              fontSize: 16,
-                            ),
-                          ),
-                        );
-                      }
-
-                      final double squareSize = constraints.maxWidth;
-                      // ? later remove the need for the size, and just use the full screen like in the backup screen lol
-                      if (squareSize <= 0) {
-                        print(
-                          "CameraScreen - LayoutBuilder: squareSize is zero or negative!",
-                        );
-                        return Container(
-                          color: Colors.red,
-                          child: const Center(child: Text("ERROR: Zero Size")),
-                        );
-                      }
-                      // ? here should be sucesfully pass the weird constarint bug
-                      return SizedBox(
-                        width: squareSize,
-                        height:
-                            squareSize, // ? maybe dump this square container stuff
-                        child: CameraPreview(
-                          _controller!,
-                        ), // ? display camera feed
-                      );
-                    },
-                  ),
-
-                  if (_isTakingPicture)
-                    Container(
-                      color: Colors.black.withAlpha(122),
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.angelBlue,
-                        ),
-                      ),
-                    ),
-                ],
-              )
-            : Container(
-                color: AppColors.bleachedCedar,
-                child: Center(
-                  child: _cameras == null && !_isCameraInitialized
-                      ? const CircularProgressIndicator(
-                          color: AppColors.angelBlue,
-                        )
-                      : Text(
-                          _cameras == null || _cameras!.isEmpty
-                              ? 'No cameras found.'
-                              : 'Failed to initialize camera. Ensure permissions are granted.',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: AppColors.white,
+                      return const Center(
+                        child: Text(
+                          "Controller not ready in LayoutBuilder",
+                          style: TextStyle(
+                            color: Colors.red,
+                            backgroundColor: Colors.yellow,
                             fontSize: 16,
                           ),
                         ),
-                ),
-              ),
-      ),
+                      );
+                    }
 
+                    final double squareSize = constraints.maxWidth;
+
+                    // ? later remove the need for the size, and just use the full screen like in the backup screen lol
+                    if (squareSize <= 0) {
+                      print(
+                        "CameraScreen - LayoutBuilder: squareSize is zero or negative!",
+                      );
+                      return Container(
+                        color: Colors.red,
+                        child: const Center(child: Text("ERROR: Zero Size")),
+                      );
+                    }
+                    // ? here should be sucesfully pass the weird constarint bug
+                    return SizedBox(
+                      width: squareSize,
+                      // height:
+                      //     squareSize, // ? maybe dump this square container stuff
+                      child: CameraPreview(
+                        _controller!,
+                      ), // ? display camera feed
+                    );
+                  },
+                ),
+
+                if (_isTakingPicture)
+                  Container(
+                    color: Colors.black.withAlpha(122),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.angelBlue,
+                      ),
+                    ),
+                  ),
+              ],
+            )
+          : Container(
+              color: AppColors.bleachedCedar,
+              child: Center(
+                child: _cameras == null && !_isCameraInitialized
+                    ? const CircularProgressIndicator(
+                        color: AppColors.angelBlue,
+                      )
+                    : Text(
+                        _cameras == null || _cameras!.isEmpty
+                            ? 'No cameras found.'
+                            : 'Failed to initialize camera. Ensure permissions are granted.',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: AppColors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+              ),
+            ),
+
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: _isCameraInitialized && !_isTakingPicture
           ? FloatingActionButton.large(
