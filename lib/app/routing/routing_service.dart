@@ -14,10 +14,6 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: "root",
 );
 
-final GlobalKey<NavigatorState> _subNavigator = GlobalKey<NavigatorState>(
-  debugLabel: "sub",
-);
-
 class RoutingService {
   RoutingService();
 
@@ -46,7 +42,6 @@ class RoutingService {
           ),
           // ? scan screen
           StatefulShellBranch(
-            // navigatorKey: _subNavigator,
             routes: [
               GoRoute(
                 name: Routes.scan,
@@ -55,17 +50,25 @@ class RoutingService {
                 routes: <RouteBase>[
                   GoRoute(
                     parentNavigatorKey: _rootNavigatorKey,
-                    // parentNavigatorKey: _subNavigator,
                     name: Routes.camera,
                     path: Routes.camera,
                     builder: (context, state) => const CameraScreen(),
                     routes: [
-                      // GoRoute(
-                      //   name: Routes.displayPicture,
-                      //   path: Routes.displayPicture
-                      //   ,
-                      //   builder: (context, state) => const DisplayPictureScreen(imagePath: imagePath)
-                      //   )
+                      GoRoute(
+                        parentNavigatorKey: _rootNavigatorKey,
+                        name: Routes.displayPicture,
+                        path: Routes.displayPicture,
+                        builder: (context, state) {
+                          String? imagePath = state.extra as String?;
+                          print("Image path from routing service: $imagePath");
+                          if (imagePath == null) {
+                            return const Scaffold(
+                              body: Center(child: Text("Image Path Not Found")),
+                            );
+                          }
+                          return DisplayPictureScreen(imagePath: imagePath);
+                        },
+                      ),
                     ],
                   ),
                   GoRoute(

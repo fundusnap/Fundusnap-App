@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:sugeye/features/scan/presentation/screens/display_picture_screen.dart';
 
@@ -45,7 +46,7 @@ class _CameraScreenState extends State<CameraScreen>
       _controller = CameraController(
         selectedCamera,
         ResolutionPreset.high, // ? adjust resolution as needed
-        enableAudio: false, // ? audio is not needed for fundus images
+        enableAudio: false, // ? io is not needed for fundus images
         imageFormatGroup: ImageFormatGroup.jpeg,
       );
 
@@ -120,26 +121,16 @@ class _CameraScreenState extends State<CameraScreen>
 
     try {
       final XFile imageFile = await _controller!.takePicture();
-      // Navigate to a new screen to display the picture and allow user to confirm/retake.
-      // You can pass the imageFile.path to the DisplayPictureScreen.
+      //?  possibly pass the imageFile.path to the DisplayPictureScreen. ????
       if (mounted) {
-        // Example: Using GoRouter to navigate. Ensure 'DisplayPictureScreen.routeName' is configured.
-        // context.pushNamed(DisplayPictureScreen.routeName, extra: imageFile.path);
-
-        // For now, let's use standard Flutter navigation.
-        // Replace with your GoRouter navigation
-        Navigator.of(context)
-            .push(
-              MaterialPageRoute(
-                builder: (context) =>
-                    DisplayPictureScreen(imagePath: imageFile.path),
-              ),
-            )
-            .then((value) {
-              // This block executes when DisplayPictureScreen is popped.
-              // You might want to re-initialize or refresh camera state if needed,
-              // especially if the user chose "Retake".
-            });
+        GoRouter.of(
+          context,
+        ).pushNamed(Routes.displayPicture, extra: imageFile.path);
+        // .then((value) {
+        //   // ? executes when DisplayPictureScreen is popped.
+        //   // ? maybe re-initialize or refresh camera state if needed ??,
+        //   // ! especially if the user chose "Retake".
+        // });
       }
     } on CameraException catch (e) {
       if (mounted) {
@@ -173,8 +164,9 @@ class _CameraScreenState extends State<CameraScreen>
               style: TextStyle(color: AppColors.veniceBlue),
             ),
             onPressed: () {
-              Navigator.of(context).pop();
-              // ?  navigate back if error  critical
+              GoRouter.of(context).pop();
+              //? change this shit to gorouter , for now navigator aja
+              // ?  navigate back if error  critical (either use pop or goback , need testing!)
               if (title == "No cameras found" ||
                   (content.contains("CameraAccessDenied") &&
                       GoRouter.of(context).canPop())) {
@@ -194,7 +186,9 @@ class _CameraScreenState extends State<CameraScreen>
         title: const Text('Capture Fundus Image'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.white),
-          onPressed: () => GoRouter.of(context).pop(),
+          onPressed: () {
+            GoRouter.of(context).pop();
+          },
         ),
       ),
       body: SafeArea(
@@ -208,7 +202,7 @@ class _CameraScreenState extends State<CameraScreen>
                         "CameraScreen - LayoutBuilder: maxWidth=${constraints.maxWidth}, maxHeight=${constraints.maxHeight}",
                       );
 
-                      // ? check controller state *inside* LayoutBuilderadf
+                      // ? check controller state *inside* LayoutBuilderadf (ijmportant)
                       if (_controller == null ||
                           !_controller!.value.isInitialized) {
                         print(
@@ -227,6 +221,7 @@ class _CameraScreenState extends State<CameraScreen>
                       }
 
                       final double squareSize = constraints.maxWidth;
+                      // ? later remove the need for the size, and just use the full screen like in the backup screen lol
                       if (squareSize <= 0) {
                         print(
                           "CameraScreen - LayoutBuilder: squareSize is zero or negative!",
@@ -236,34 +231,15 @@ class _CameraScreenState extends State<CameraScreen>
                           child: const Center(child: Text("ERROR: Zero Size")),
                         );
                       }
-
-                      // ? TEMPORARY TEST
-                      print(
-                        "CameraScreen - LayoutBuilder: Rendering BLUE TEST BOX.",
-                      );
+                      // ? here should be sucesfully pass the weird constarint bug
                       return SizedBox(
                         width: squareSize,
-                        height: squareSize, // The square container
+                        height:
+                            squareSize, // ? maybe dump this square container stuff
                         child: CameraPreview(
                           _controller!,
-                        ), // Display the camera feed
+                        ), // ? display camera feed
                       );
-                      // Container(
-                      //   width: squareSize,
-                      //   height: squareSize,
-                      //   color: Colors.blue,
-                      //   child: Center(
-                      //     child: Text(
-                      //       "BLUE TEST BOX\nSquare Preview Area\nCam AR: ${_controller!.value.aspectRatio.toStringAsFixed(2)}",
-                      //       textAlign: TextAlign.center,
-                      //       style: const TextStyle(
-                      //         color: Colors.white,
-                      //         fontSize: 12,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // );
-                      // --- END OF TEMPORARY TEST ---
                     },
                   ),
 

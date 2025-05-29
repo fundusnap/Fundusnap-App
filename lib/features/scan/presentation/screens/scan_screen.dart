@@ -12,8 +12,6 @@ class ScanScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      // mainAxisAlignment: MainAxisAlignment.center,
-      // crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         const Gap(25),
         const Text(

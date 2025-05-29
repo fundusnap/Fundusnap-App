@@ -1,29 +1,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
 
 class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
-
-  // If using GoRouter for this screen, define a route name
-  // static const String routeName = 'display_picture'; // Example
 
   const DisplayPictureScreen({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Preview Image'),
-        backgroundColor: AppColors.veniceBlue,
-        foregroundColor: AppColors.white,
-        // GoRouter might handle the back button automatically if this is part of its stack
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back, color: AppColors.white),
-        //   onPressed: () => Navigator.of(context).pop(),
-        // ),
-      ),
+      appBar: AppBar(title: const Text('Preview Image')),
       backgroundColor: AppColors.bleachedCedar,
       body: SafeArea(
         child: Column(
@@ -46,8 +35,7 @@ class DisplayPictureScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      // Just pop to go back to the CameraScreen
-                      Navigator.of(context).pop();
+                      GoRouter.of(context).pop();
                     },
                   ),
                   ElevatedButton.icon(
@@ -89,7 +77,7 @@ class DisplayPictureScreen extends StatelessWidget {
 
                       // For demonstration, let's just pop this screen.
                       // You'll need to decide the exact navigation flow.
-                      Navigator.of(
+                      GoRouter.of(
                         context,
                       ).pop(imagePath); // Pop and return imagePath
                     },
