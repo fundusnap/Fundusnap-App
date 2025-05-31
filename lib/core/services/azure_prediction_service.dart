@@ -10,7 +10,7 @@ class AzurePredictionService {
       "https://fundusnap-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/ffdd0da0-9f9e-4376-8924-a42d8a4d35c0/classify/iterations/V1/image";
 
   final String _predictionKey =
-      "2NOy2892PFsVo33h3mr4X2rjJpDF15gwIDX5EeUduejL9EvxDjoFJQQJ99BEACqBBLyXJ3w3AAAIACOG40Fh";
+      "2NOy2892PFsVo33h3mr4X2rjJpDF15gjwIDX5EeUduejL9EvxDjoFJQQJ99BEACqBBLyXJ3w3AAAIACOG40Fh";
 
   Future<Map<String, dynamic>?> predictImage(File imageFile) async {
     try {

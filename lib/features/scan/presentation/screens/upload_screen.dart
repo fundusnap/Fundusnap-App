@@ -60,6 +60,7 @@ class _UploadScreenState extends State<UploadScreen> {
       final Map<String, dynamic>? predictionResult = await _predictionService
           .predictImage(_selectedImageFile!);
 
+
       if (mounted) {
         if (predictionResult != null) {
           debugPrint('-----------------------------------------');
@@ -165,9 +166,7 @@ class _UploadScreenState extends State<UploadScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              7,
-                            ), // Slightly less than container
+                            borderRadius: BorderRadius.circular(7),
                             child: Image.file(
                               _selectedImageFile!,
                               fit: BoxFit.contain,
