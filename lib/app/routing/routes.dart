@@ -9,5 +9,8 @@ class Routes {
 
   static const String upload = "upload";
 
+  static const String signInScreen = "/sign-in";
+  static const String signUpScreen = "/sign-up";
+
   // static const
 }
