@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sugeye/app/layout/destinations.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:sugeye/features/home/presentation/widgets/recent_scan.dart';
 
@@ -28,7 +30,20 @@ class HomeScreen extends StatelessWidget {
         ),
         const Gap(16),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            final int scanIndex = destinations.indexWhere(
+              (d) => d.label == "Scan",
+            );
+            if (scanIndex != -1) {
+              final StatefulNavigationShellState shell =
+                  StatefulNavigationShell.of(context);
+              shell.goBranch(scanIndex);
+            } else {
+              print(
+                "Error: 'Scan' destination index not found. Navigating with goNamed as fallback.",
+              );
+            }
+          },
           style: const ButtonStyle(
             backgroundColor: WidgetStatePropertyAll(AppColors.angelBlue),
           ),

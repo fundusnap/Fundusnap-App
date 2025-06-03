@@ -16,7 +16,6 @@ void _logError(String code, String? message) {
 List<CameraDescription> cameras = <CameraDescription>[];
 
 void main() async {
-  // _logError(code, message)
   WidgetsFlutterBinding.ensureInitialized();
 
   final CustomAuthRepositoryImpl authRepository = CustomAuthRepositoryImpl(
@@ -25,7 +24,6 @@ void main() async {
   );
   final AuthCubit authCubit = AuthCubit(authRepository: authRepository);
   GoRouter router = RoutingService(authCubit: authCubit).router;
-  // print("hahahah");
 
   try {
     cameras = await availableCameras();

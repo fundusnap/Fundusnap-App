@@ -51,18 +51,19 @@ class LayoutScaffoldWithNav extends StatelessWidget {
         child: navigationShell,
       ),
       bottomNavigationBar: NavigationBar(
+        key: ValueKey<int>(navigationShell.currentIndex),
         destinations: destinations
             .map(
               (destination) => NavigationDestination(
                 icon: Icon(destination.icon),
                 label: destination.label,
-                // selectedIcon: Icon(destination.icon),
+                selectedIcon: Icon(destination.icon),
               ),
             )
             .toList(),
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) {
-          print(GoRouterState.of(context).matchedLocation);
+          // print(GoRouterState.of(context).matchedLocation);
           navigationShell.goBranch(index);
         },
       ),
