@@ -37,10 +37,7 @@ class _AppState extends State<App> {
       providers: [
         RepositoryProvider<AuthRepository>.value(value: widget.authRepository),
         RepositoryProvider<PredictionRepository>(
-          create: (context) => PredictionRepositoryImpl(
-            dio: widget.dio,
-            authRepository: widget.authRepository,
-          ),
+          create: (context) => PredictionRepositoryImpl(dio: widget.dio),
         ),
       ],
       child: MultiBlocProvider(
