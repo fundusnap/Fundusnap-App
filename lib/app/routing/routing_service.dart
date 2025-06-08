@@ -49,7 +49,7 @@ class RoutingService {
     redirect: (BuildContext context, GoRouterState state) {
       final AuthState authState = authCubit.state;
       final String currentPath =
-          state.matchedLocation; // The path of the route that was matched
+          state.matchedLocation; // ? path of the route that was matched
 
       print(
         "[GoRouter Redirect] Current AuthState: $authState, Current Path: $currentPath",
@@ -185,8 +185,8 @@ class RoutingService {
                         parentNavigatorKey: _rootNavigatorKey,
                         name: Routes.uploadResult,
                         path: Routes.uploadResult,
-                        builder: (context, s) {
-                          Prediction? prediction = s.extra as Prediction?;
+                        builder: (context, state) {
+                          Prediction? prediction = state.extra as Prediction?;
                           if (prediction == null) {
                             return const Scaffold(
                               body: Center(

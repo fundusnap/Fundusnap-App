@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart'; // For date formatting
-import 'package:sugeye/app/themes/app_colors.dart'; // Your colors
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:sugeye/app/routing/routes.dart';
+import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:sugeye/features/prediction/domain/entities/prediction.dart';
+import 'package:sugeye/features/prediction/domain/entities/prediction_tag.dart';
 
 class ResultScreen extends StatelessWidget {
   final Prediction prediction;
@@ -11,15 +14,15 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Find the prediction with the highest probability
-    final topPrediction = prediction.predictions.reduce(
+    // ? prediction with the highest probability
+    final PredictionTag topPrediction = prediction.predictions.reduce(
       (current, next) =>
           current.probability > next.probability ? current : next,
     );
 
-    // Helper to get a descriptive text based on the top prediction tag
+    // ? helper to get a descriptive text based on the top prediction tag
     String getResultDescription(String tagName) {
-      // You can customize these messages
+      // TODO : DYNAMIC messages
       switch (tagName) {
         case "No DR":
           return "The AI scan did not detect any significant signs of diabetic retinopathy in the provided retinal image. Regular eye check-ups are still recommended.";
@@ -29,14 +32,11 @@ class ResultScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Scan Results'),
-        // The back button will be added automatically by GoRouter
-      ),
+      appBar: AppBar(title: const Text('Scan Results')),
       body: ListView(
         padding: const EdgeInsets.all(20.0),
         children: <Widget>[
-          // --- Main Result Heading ---
+          // ? --- Main Result Heading ---
           Text(
             topPrediction.tagName,
             textAlign: TextAlign.center,
@@ -46,22 +46,23 @@ class ResultScreen extends StatelessWidget {
             ),
           ),
           const Gap(12),
-          // --- Result Description ---
+          // ?  --- Result Description ---
           Text(
             getResultDescription(topPrediction.tagName),
             textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(color: AppColors.gray, height: 1.5),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: AppColors.bleachedCedar,
+              height: 1.5,
+            ),
           ),
           const Gap(24),
-          // --- Scanned Image Preview ---
+          //  ? --- Scanned Image Preview ---
           ClipRRect(
             borderRadius: BorderRadius.circular(12.0),
             child: Image.network(
               prediction.imageURL,
               fit: BoxFit.cover,
-              // Show a loading indicator while the image is loading from the network
+              // ? Show a loading indicator while the image is loading from the network
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
                 return Center(
@@ -85,7 +86,7 @@ class ResultScreen extends StatelessWidget {
             ),
           ),
           const Gap(24),
-          // --- Summary Section ---
+          // ? --- Summary Section ---
           Text(
             'Summary',
             style: Theme.of(
@@ -106,12 +107,12 @@ class ResultScreen extends StatelessWidget {
                   label: 'Scan Date',
                   value: DateFormat.yMMMMd().format(
                     prediction.created,
-                  ), // e.g., June 8, 2025
+                  ), // ?  e.g., June 8, 2025
                 ),
                 const Divider(),
                 const _SummaryRow(
                   label: 'AI Model',
-                  value: 'RetinaScan v1.2', // Placeholder as in mockup
+                  value: 'RetinaScan v1.2', //  ? Placeholder
                 ),
                 const Divider(),
                 _SummaryRow(
@@ -124,7 +125,7 @@ class ResultScreen extends StatelessWidget {
             ),
           ),
           const Gap(32),
-          // --- Action Buttons ---
+          // ? --- Action Buttons ---
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.veniceBlue,
@@ -144,9 +145,11 @@ class ResultScreen extends StatelessWidget {
           TextButton(
             onPressed: () {
               // TODO: Implement scheduling logic or navigation
+              GoRouter.of(context).goNamed(Routes.home);
             },
             child: const Text(
-              'Schedule Follow-up',
+              // ? 'Schedule Follow-up',
+              'Go Back to Home',
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.veniceBlue,
@@ -160,7 +163,7 @@ class ResultScreen extends StatelessWidget {
   }
 }
 
-// Helper widget for a row in the summary card
+// ? Helper widget for a row in the summary card
 class _SummaryRow extends StatelessWidget {
   final String label;
   final String value;

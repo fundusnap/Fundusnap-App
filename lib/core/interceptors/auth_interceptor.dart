@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:sugeye/features/auth/data/repositories/custom_auth_repository.dart';
+import 'package:sugeye/features/auth/domain/entities/app_user.dart';
 
 class AuthInterceptor extends Interceptor {
   final CustomAuthRepositoryImpl _authRepository;
@@ -12,13 +13,13 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Skip adding token for auth endpoints
+    // ? skip adding token for auth endpoints
     if (options.path.contains('/auth/')) {
       return handler.next(options);
     }
 
-    // Add access token to all other requests
-    final user = await _authRepository.getCurrentUser();
+    // ? add access token to all other requests
+    final AppUser? user = await _authRepository.getCurrentUser();
     if (user != null) {
       options.headers['Authorization'] = 'Bearer ${user.accessToken}';
     } else {
@@ -33,19 +34,19 @@ class AuthInterceptor extends Interceptor {
     print(
       '❌ Request failed: ${err.response?.statusCode} - ${err.requestOptions.path}',
     );
-    // Handle 401 Unauthorized - try to refresh token
+    // ? handle 401 Unauthorized - try to refresh token
     if (err.response?.statusCode == 401) {
       print('Token expired, attempting refresh...');
 
       try {
-        final newAccessToken = await _authRepository.refreshToken();
+        final String? newAccessToken = await _authRepository.refreshToken();
         if (newAccessToken != null) {
           print('Token refreshed successfully, retrying request...');
-          // Update the failed request with new token
+          // ?  Update the failed request with new token
           err.requestOptions.headers['Authorization'] =
               'Bearer $newAccessToken';
 
-          // Retry using the same Dio instance to preserve configuration
+          //  ? Retry using the same Dio instance to preserve configuration
           final response = await _dio.fetch(err.requestOptions);
           return handler.resolve(response);
         } else {
@@ -53,7 +54,7 @@ class AuthInterceptor extends Interceptor {
         }
       } catch (e) {
         print('❌ Token refresh error: $e');
-        // Refresh failed, user will be signed out by refreshToken method
+        // ? Refresh failed, user will be signed out by refreshToken method
       }
     }
 

@@ -66,15 +66,11 @@ class _UploadScreenState extends State<UploadScreen> {
   Future<void> _analyzeImage() async {
     if (_selectedImageFile == null || _isProcessing) return;
 
-    // We no longer manage state here. We just call the cubit method.
-    // The BlocListener will handle the state changes.
     context.read<CreatePredictionCubit>().createPrediction(_selectedImageFile!);
   }
 
   @override
   Widget build(BuildContext context) {
-    // Wrap the Scaffold with a BlocListener to handle side effects
-    // like showing SnackBars, printing to console, or navigating.
     return BlocListener<CreatePredictionCubit, CreatePredictionState>(
       listener: (context, state) {
         if (state is CreatePredictionLoading) {
@@ -84,11 +80,10 @@ class _UploadScreenState extends State<UploadScreen> {
         } else if (state is CreatePredictionSuccess) {
           setState(() {
             _isProcessing = false;
-            // Optionally clear the image after a successful prediction
+            // ?  clear the image after a successful prediction
             _selectedImageFile = null;
           });
 
-          // The primary goal: print the result to the console!
           debugPrint('-----------------------------------------');
           debugPrint('✅ Prediction Success (via Cubit):');
           debugPrint('Prediction ID: ${state.prediction.id}');
@@ -179,7 +174,7 @@ class _UploadScreenState extends State<UploadScreen> {
                 // const Gap(20),
                 Expanded(
                   child: Center(
-                    // The UI for the image preview remains the same
+                    // ? UI for the image preview
                     child: _selectedImageFile != null
                         ? Container(
                             constraints: BoxConstraints(
@@ -226,8 +221,8 @@ class _UploadScreenState extends State<UploadScreen> {
                 const Gap(20),
                 if (_selectedImageFile != null)
                   ElevatedButton.icon(
-                    // The UI for the button now uses _isProcessing, which is
-                    // controlled by the BlocListener.
+                    // ?UI for the button  uses _isProcessing
+                    //? controlled by the BlocListener.
                     icon: _isProcessing
                         ? Container(
                             width: 24,
