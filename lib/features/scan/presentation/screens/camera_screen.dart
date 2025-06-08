@@ -230,6 +230,15 @@ class _CameraScreenState extends State<CameraScreen>
                       //     squareSize, // ? maybe dump this square container stuff
                       child: CameraPreview(
                         _controller!,
+                        child: const Stack(
+                          children: [
+                            Positioned(
+                              top: 20,
+                              left: 20,
+                              child: Icon(Icons.flash_on),
+                            ),
+                          ],
+                        ),
                       ), // ? display camera feed
                     );
                   },

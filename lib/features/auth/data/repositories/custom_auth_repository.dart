@@ -197,37 +197,35 @@ class CustomAuthRepositoryImpl implements AuthRepository {
   @override
   Stream<AppUser?> get authStateChanges => _authStateController.stream;
 
-  // ?  would typically be called by a Dio interceptor when a 401 is received.
   Future<String?> refreshToken() async {
     final storedRefreshToken = await _secureStorage.read(key: _refreshTokenKey);
-    final storedEmail = await _secureStorage.read(
-      key: _userEmailKey,
-    ); // Still useful for AppUser object
+    final storedEmail = await _secureStorage.read(key: _userEmailKey);
 
     if (storedRefreshToken == null || storedEmail == null) {
-      print("Refresh token or email not found in storage. Cannot refresh.");
+      print("❌ Refresh token or email not found in storage. Cannot refresh.");
       await signOut();
       return null;
     }
 
+    print("🔄 Attempting to refresh token for email: $storedEmail");
     print(
-      "Attempting to refresh token for email: $storedEmail using Bearer token in header.",
-    );
+      "🔑 Using refresh token: ${storedRefreshToken.substring(0, 20)}...",
+    ); // Log first 20 chars for debugging
 
     try {
-      final response = await _dio.post(
-        "$_baseUrl/refresh-token", // Endpoint: /user/auth/refresh-token
-        data: {},
-        // Or use 'data: null' if no body is expected at all. {} is safer for POST with JSON content type.
+      final response = await _dio.get(
+        "$_baseUrl/refresh-token", // This should be: https://api.fundusnap.com/user/auth/refresh-token
+        // data: {}, // Empty body as per your API spec
         options: Options(
           headers: {
-            // The refresh token itself is sent as a Bearer token here
             'Authorization': 'Bearer $storedRefreshToken',
-            'Content-Type':
-                'application/json', // Usually good to keep, even with an empty body for POST
+            // 'Content-Type': 'application/json',
           },
         ),
       );
+
+      print("🔄 Refresh response status: ${response.statusCode}");
+      print("🔄 Refresh response data: ${response.data}");
 
       if (response.statusCode == 200 && response.data != null) {
         final responseData = response.data as Map<String, dynamic>;
@@ -236,9 +234,7 @@ class CustomAuthRepositoryImpl implements AuthRepository {
           final tokenData = responseData['data'] as Map<String, dynamic>;
 
           final newAccessToken = tokenData['access_token'] as String;
-          final newRefreshToken =
-              tokenData['refresh_token']
-                  as String; // Backend rotates refresh tokens
+          final newRefreshToken = tokenData['refresh_token'] as String;
           final emailFromResponse =
               tokenData['email'] as String? ?? storedEmail;
 
@@ -248,37 +244,115 @@ class CustomAuthRepositoryImpl implements AuthRepository {
             refreshToken: newRefreshToken,
           );
 
-          await _storeTokensAndUser(
-            updatedUser,
-          ); // Stores new tokens and updates authStateController
-          print(
-            "Token refresh successful. New access token obtained via Bearer refresh.",
-          );
+          await _storeTokensAndUser(updatedUser);
+          print("✅ Token refresh successful. New access token obtained.");
           return newAccessToken;
         } else {
           print(
-            "Token refresh failed: API status not 'success' or data missing. Response: ${response.data}",
+            "❌ Token refresh failed: API status not 'success' or data missing. Response: ${response.data}",
           );
           await signOut();
           return null;
         }
       } else {
         print(
-          "Token refresh failed: HTTP ${response.statusCode}. Response: ${response.data}",
+          "❌ Token refresh failed: HTTP ${response.statusCode}. Response: ${response.data}",
         );
         await signOut();
         return null;
       }
     } on DioException catch (e) {
-      print("DioError refreshing token: ${e.response?.data ?? e.message}");
+      print(
+        "❌ DioError refreshing token: ${e.response?.statusCode} - ${e.response?.data ?? e.message}",
+      );
       await signOut();
       return null;
     } catch (e) {
-      print("Unexpected error refreshing token: $e");
+      print("❌ Unexpected error refreshing token: $e");
       await signOut();
       return null;
     }
   }
+
+  // ?  would typically be called by a Dio interceptor when a 401 is received.
+  // Future<String?> refreshToken() async {
+  //   final storedRefreshToken = await _secureStorage.read(key: _refreshTokenKey);
+  //   final storedEmail = await _secureStorage.read(
+  //     key: _userEmailKey,
+  //   ); // Still useful for AppUser object
+  //   if (storedRefreshToken == null || storedEmail == null) {
+  //     print("Refresh token or email not found in storage. Cannot refresh.");
+  //     await signOut();
+  //     return null;
+  //   }
+  //   print(
+  //     "Attempting to refresh token for email: $storedEmail using Bearer token in header.",
+  //   );
+  //   try {
+  //     final response = await _dio.post(
+  //       "$_baseUrl/refresh-token", // Endpoint: /user/auth/refresh-token
+  //       data: {},
+  //       // Or use 'data: null' if no body is expected at all. {} is safer for POST with JSON content type.
+  //       options: Options(
+  //         headers: {
+  //           // The refresh token itself is sent as a Bearer token here
+  //           'Authorization': 'Bearer $storedRefreshToken',
+  //           'Content-Type':
+  //               'application/json', // Usually good to keep, even with an empty body for POST
+  //         },
+  //       ),
+  //     );
+
+  //     if (response.statusCode == 200 && response.data != null) {
+  //       final responseData = response.data as Map<String, dynamic>;
+  //       if (responseData['status'] == 'success' &&
+  //           responseData['data'] != null) {
+  //         final tokenData = responseData['data'] as Map<String, dynamic>;
+
+  //         final newAccessToken = tokenData['access_token'] as String;
+  //         final newRefreshToken =
+  //             tokenData['refresh_token']
+  //                 as String; // Backend rotates refresh tokens
+  //         final emailFromResponse =
+  //             tokenData['email'] as String? ?? storedEmail;
+
+  //         final updatedUser = AppUser(
+  //           email: emailFromResponse,
+  //           accessToken: newAccessToken,
+  //           refreshToken: newRefreshToken,
+  //         );
+
+  //         await _storeTokensAndUser(
+  //           updatedUser,
+  //         ); // Stores new tokens and updates authStateController
+  //         print(
+  //           "Token refresh successful. New access token obtained via Bearer refresh.",
+  //         );
+  //         return newAccessToken;
+  //       } else {
+  //         print(
+  //           "Token refresh failed: API status not 'success' or data missing. Response: ${response.data}",
+  //         );
+  //         await signOut();
+  //         return null;
+  //       }
+  //     } else {
+  //       print(
+  //         "Token refresh failed: HTTP ${response.statusCode}. Response: ${response.data}",
+  //       );
+  //       await signOut();
+  //       return null;
+  //     }
+  //   } on DioException catch (e) {
+  //     print("DioError refreshing token: ${e.response?.data ?? e.message}");
+  //     await signOut();
+  //     return null;
+  //   } catch (e) {
+  //     print("Unexpected error refreshing token: $e");
+  //     await signOut();
+  //     return null;
+  //   }
+  // }
 
   void dispose() {
     _authStateController.close();

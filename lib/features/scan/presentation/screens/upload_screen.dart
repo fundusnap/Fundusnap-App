@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:gap/gap.dart';
+import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart';
 import 'package:sugeye/features/prediction/presentation/cubit/create/create_prediction_cubit.dart';
 
 class UploadScreen extends StatefulWidget {
@@ -20,6 +21,27 @@ class _UploadScreenState extends State<UploadScreen> {
   final ImagePicker _picker = ImagePicker();
 
   // We no longer need a direct instance of the service here.
+
+  Future<void> _testTokenRefresh() async {
+    try {
+      final authRepo = context.read<AuthRepository>();
+      final result = await authRepo.refreshToken();
+
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            result != null ? 'Refresh successful!' : 'Refresh failed!',
+          ),
+          backgroundColor: result != null ? Colors.green : Colors.red,
+        ),
+      );
+    } catch (e) {
+      print('Test refresh error: $e');
+    }
+  }
 
   Future<void> _pickImageFromGallery() async {
     if (_isProcessing) return;
@@ -132,6 +154,20 @@ class _UploadScreenState extends State<UploadScreen> {
                     textStyle: const TextStyle(fontSize: 16),
                   ),
                   onPressed: _isProcessing ? null : _pickImageFromGallery,
+                ),
+                const Gap(20),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('refresh token'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.angelBlue,
+                    foregroundColor: AppColors.bleachedCedar,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    textStyle: const TextStyle(fontSize: 16),
+                  ),
+                  onPressed: () {
+                    _testTokenRefresh();
+                  },
                 ),
                 const Gap(20),
                 Expanded(

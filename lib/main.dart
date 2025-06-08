@@ -45,7 +45,7 @@ void main() async {
   );
 
   //?  Add auth interceptor after creating authRepository
-  dio.interceptors.add(AuthInterceptor(authRepository));
+  dio.interceptors.add(AuthInterceptor(authRepository, dio));
 
   final AuthCubit authCubit = AuthCubit(authRepository: authRepository);
   GoRouter router = RoutingService(authCubit: authCubit).router;

@@ -3,8 +3,9 @@ import 'package:sugeye/features/auth/data/repositories/custom_auth_repository.da
 
 class AuthInterceptor extends Interceptor {
   final CustomAuthRepositoryImpl _authRepository;
+  final Dio _dio;
 
-  AuthInterceptor(this._authRepository);
+  AuthInterceptor(this._authRepository, this._dio);
 
   @override
   void onRequest(
@@ -20,6 +21,8 @@ class AuthInterceptor extends Interceptor {
     final user = await _authRepository.getCurrentUser();
     if (user != null) {
       options.headers['Authorization'] = 'Bearer ${user.accessToken}';
+    } else {
+      print('No user found, request without auth: ${options.path}');
     }
 
     handler.next(options);
@@ -27,25 +30,29 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
+    print(
+      '❌ Request failed: ${err.response?.statusCode} - ${err.requestOptions.path}',
+    );
     // Handle 401 Unauthorized - try to refresh token
     if (err.response?.statusCode == 401) {
+      print('Token expired, attempting refresh...');
+
       try {
         final newAccessToken = await _authRepository.refreshToken();
         if (newAccessToken != null) {
-          // Retry the original request with new token
-          final opts = err.requestOptions;
-          opts.headers['Authorization'] = 'Bearer $newAccessToken';
+          print('Token refreshed successfully, retrying request...');
+          // Update the failed request with new token
+          err.requestOptions.headers['Authorization'] =
+              'Bearer $newAccessToken';
 
-          final cloneReq = await Dio().request(
-            opts.path,
-            options: Options(method: opts.method, headers: opts.headers),
-            data: opts.data,
-            queryParameters: opts.queryParameters,
-          );
-
-          return handler.resolve(cloneReq);
+          // Retry using the same Dio instance to preserve configuration
+          final response = await _dio.fetch(err.requestOptions);
+          return handler.resolve(response);
+        } else {
+          print('❌ Token refresh failed - user will be signed out');
         }
       } catch (e) {
+        print('❌ Token refresh error: $e');
         // Refresh failed, user will be signed out by refreshToken method
       }
     }

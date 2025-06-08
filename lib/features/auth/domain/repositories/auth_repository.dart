@@ -14,4 +14,5 @@ abstract class AuthRepository {
   Future<void> signOut();
   Future<AppUser?> getCurrentUser();
   Stream<AppUser?> get authStateChanges;
+  Future<String?> refreshToken();
 }
