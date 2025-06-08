@@ -8,6 +8,10 @@ import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart';
 // import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart';
 import 'package:sugeye/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:sugeye/features/prediction/data/repositories/prediction_repository_impl.dart';
+import 'package:sugeye/features/prediction/domain/repositories/prediction_repository.dart';
+import 'package:sugeye/features/prediction/presentation/cubit/create/create_prediction_cubit.dart';
+import 'package:sugeye/features/prediction/presentation/cubit/detail/prediction_detail_cubit.dart';
+import 'package:sugeye/features/prediction/presentation/cubit/list/prediction_list_cubit.dart';
 
 class App extends StatefulWidget {
   const App({
@@ -37,16 +41,33 @@ class _AppState extends State<App> {
       providers: [
         RepositoryProvider(
           create: (_) => PredictionRepositoryImpl(
-            dio: Dio(),
+            dio: widget.dio,
             authRepository: context.read<AuthRepository>(),
           ),
         ),
       ],
       child: MultiBlocProvider(
-        providers: [BlocProvider<AuthCubit>.value(value: widget.authCubit)],
+        providers: [
+          BlocProvider<AuthCubit>.value(value: widget.authCubit),
+          BlocProvider<CreatePredictionCubit>(
+            create: (_) => CreatePredictionCubit(
+              predictionRepository: context.read<PredictionRepository>(),
+            ),
+          ),
+          BlocProvider<PredictionDetailCubit>(
+            create: (_) => PredictionDetailCubit(
+              predictionRepository: context.read<PredictionRepository>(),
+            ),
+          ),
+          BlocProvider<PredictionListCubit>(
+            create: (_) => PredictionListCubit(
+              predictionRepository: context.read<PredictionRepository>(),
+            ),
+          ),
+        ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          title: 'Sugeye',
+          title: 'Fundusnap',
           theme: sugeyeLightTheme,
           routerConfig: widget.router,
         ),
