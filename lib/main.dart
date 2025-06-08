@@ -17,9 +17,10 @@ List<CameraDescription> cameras = <CameraDescription>[];
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final Dio dio = Dio();
 
   final CustomAuthRepositoryImpl authRepository = CustomAuthRepositoryImpl(
-    dio: Dio(),
+    dio: dio,
     secureStorage: const FlutterSecureStorage(),
   );
   final AuthCubit authCubit = AuthCubit(authRepository: authRepository);
@@ -30,5 +31,5 @@ void main() async {
   } on CameraException catch (e) {
     _logError(e.code, e.description);
   }
-  runApp(App(router: router, authCubit: authCubit));
+  runApp(App(router: router, authCubit: authCubit, dio: dio));
 }
