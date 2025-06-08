@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:sugeye/features/prediction/presentation/cubit/create/create_prediction_cubit.dart';
+import 'package:sugeye/features/prediction/presentation/cubit/list/prediction_list_cubit.dart';
 
 class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
@@ -49,15 +50,10 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
             'Top Prediction: ${state.prediction.predictions.first.tagName} (${(state.prediction.predictions.first.probability * 100).toStringAsFixed(2)}%)',
           );
           debugPrint('-----------------------------------------');
-
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   const SnackBar(
-          //     content: Text(
-          //       'Prediction successful! Check console for details.',
-          //     ),
-          //     backgroundColor: Colors.green,
-          //   ),
+          // context.read<PredictionListCubit>().addNewPrediction(
+          //   state.prediction,
           // );
+
           if (context.mounted) {
             // GoRouter.of(context).pop();
             try {

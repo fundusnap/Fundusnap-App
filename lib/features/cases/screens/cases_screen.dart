@@ -63,6 +63,7 @@ class _CasesScreenState extends State<CasesScreen> {
             onRefresh: () =>
                 context.read<PredictionListCubit>().fetchPredictions(),
             child: ListView.builder(
+              reverse: true,
               itemCount: state.predictions.length,
               itemBuilder: (context, index) {
                 final prediction = state.predictions[index];
@@ -86,6 +87,7 @@ class _PredictionCaseCard extends StatelessWidget {
     debugPrint('📸 Case card image URL: ${prediction.imageURL}');
     debugPrint('📸 Image URL domain: ${Uri.parse(prediction.imageURL).host}');
     return Card(
+      color: AppColors.veniceBlue,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       elevation: 2.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -134,13 +136,17 @@ class _PredictionCaseCard extends StatelessWidget {
         ),
         title: Text(
           prediction.name,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: AppColors.white,
+          ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
           'Scanned on ${DateFormat.yMMMd().format(prediction.created)}',
-          style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+          // style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+          style: const TextStyle(color: Colors.white60, fontSize: 14),
         ),
         trailing: const Icon(Icons.chevron_right, color: AppColors.gray),
         onTap: () {

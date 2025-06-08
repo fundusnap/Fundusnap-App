@@ -6,8 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:gap/gap.dart';
-import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart';
+// import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart';
 import 'package:sugeye/features/prediction/presentation/cubit/create/create_prediction_cubit.dart';
+import 'package:sugeye/features/prediction/presentation/cubit/list/prediction_list_cubit.dart';
 
 class UploadScreen extends StatefulWidget {
   const UploadScreen({super.key});
@@ -91,14 +92,8 @@ class _UploadScreenState extends State<UploadScreen> {
             'Top Prediction: ${state.prediction.predictions.first.tagName} (${(state.prediction.predictions.first.probability * 100).toStringAsFixed(2)}%)',
           );
           debugPrint('-----------------------------------------');
-
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   const SnackBar(
-          //     content: Text(
-          //       'Prediction successful! Check console for details.',
-          //     ),
-          //     backgroundColor: Colors.green,
-          //   ),
+          // context.read<PredictionListCubit>().addNewPrediction(
+          //   state.prediction,
           // );
           if (context.mounted) {
             try {
