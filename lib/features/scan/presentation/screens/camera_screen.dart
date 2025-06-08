@@ -239,116 +239,6 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(title: const Text('Capture Fundus Image')),
-  //     body: _isCameraInitialized && _controller != null
-  //         ? Stack(
-  //             alignment: Alignment.center,
-  //             children: <Widget>[
-  //               LayoutBuilder(
-  //                 builder: (context, constraints) {
-  //                   print(
-  //                     "CameraScreen - LayoutBuilder: maxWidth=${constraints.maxWidth}, maxHeight=${constraints.maxHeight}",
-  //                   );
-
-  //                   // ? check controller state *inside* LayoutBuilderadf (ijmportant)
-  //                   if (_controller == null ||
-  //                       !_controller!.value.isInitialized) {
-  //                     print(
-  //                       "CameraScreen - LayoutBuilder: Controller not initialized here!",
-  //                     );
-  //                     return const Center(
-  //                       child: Text(
-  //                         "Controller not ready in LayoutBuilder",
-  //                         style: TextStyle(
-  //                           color: Colors.red,
-  //                           backgroundColor: Colors.yellow,
-  //                           fontSize: 16,
-  //                         ),
-  //                       ),
-  //                     );
-  //                   }
-
-  //                   final double squareSize = constraints.maxWidth;
-
-  //                   // ? later remove the need for the size, and just use the full screen like in the backup screen lol
-  //                   if (squareSize <= 0) {
-  //                     print(
-  //                       "CameraScreen - LayoutBuilder: squareSize is zero or negative!",
-  //                     );
-  //                     return Container(
-  //                       color: Colors.red,
-  //                       child: const Center(child: Text("ERROR: Zero Size")),
-  //                     );
-  //                   }
-  //                   // ? here should be sucesfully pass the weird constarint bug
-  //                   return SizedBox(
-  //                     width: squareSize,
-  //                     // height:
-  //                     //     squareSize, // ? maybe dump this square container stuff
-  //                     child: CameraPreview(
-  //                       _controller!,
-  //                       child: const Stack(
-  //                         children: [
-  //                           Positioned(
-  //                             top: 20,
-  //                             left: 20,
-  //                             child: Icon(Icons.flash_on),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ), // ? display camera feed
-  //                   );
-  //                 },
-  //               ),
-
-  //               if (_isTakingPicture)
-  //                 Container(
-  //                   color: Colors.black.withAlpha(122),
-  //                   child: const Center(
-  //                     child: CircularProgressIndicator(
-  //                       color: AppColors.angelBlue,
-  //                     ),
-  //                   ),
-  //                 ),
-  //             ],
-  //           )
-  //         : Container(
-  //             color: AppColors.bleachedCedar,
-  //             child: Center(
-  //               child: _cameras == null && !_isCameraInitialized
-  //                   ? const CircularProgressIndicator(
-  //                       color: AppColors.angelBlue,
-  //                     )
-  //                   : Text(
-  //                       _cameras == null || _cameras!.isEmpty
-  //                           ? 'No cameras found.'
-  //                           : 'Failed to initialize camera. Ensure permissions are granted.',
-  //                       textAlign: TextAlign.center,
-  //                       style: const TextStyle(
-  //                         color: AppColors.white,
-  //                         fontSize: 16,
-  //                       ),
-  //                     ),
-  //             ),
-  //           ),
-
-  //     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-  //     floatingActionButton: _isCameraInitialized && !_isTakingPicture
-  //         ? FloatingActionButton.large(
-  //             onPressed: _takePicture,
-  //             heroTag: 'cameraScreenFAB',
-  //             backgroundColor: AppColors.angelBlue,
-  //             foregroundColor: AppColors.bleachedCedar,
-  //             tooltip: 'Take Picture',
-  //             child: const Icon(Icons.camera_alt, size: 40),
-  //           )
-  //         : null,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -388,117 +278,14 @@ class _CameraScreenState extends State<CameraScreen>
                         _controller!,
                         child: Stack(
                           children: [
-                            // Flash toggle button - top left
-                            Positioned(
-                              top: 20,
-                              left: 20,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: IconButton(
-                                  icon: Icon(
-                                    _isFlashOn
-                                        ? Icons.flash_on
-                                        : Icons.flash_off,
-                                    color: _isFlashOn
-                                        ? Colors.yellow
-                                        : Colors.white,
-                                    size: 28,
-                                  ),
-                                  onPressed: _toggleFlash,
-                                  tooltip: _isFlashOn
-                                      ? 'Turn off flash'
-                                      : 'Turn on flash',
-                                ),
-                              ),
-                            ),
-
-                            // Camera flip button - top right
-                            Positioned(
-                              top: 20,
-                              right: 20,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: IconButton(
-                                  icon: const Icon(
-                                    Icons.flip_camera_ios,
-                                    color: Colors.white,
-                                    size: 28,
-                                  ),
-                                  onPressed:
-                                      _cameras != null && _cameras!.length > 1
-                                      ? _flipCamera
-                                      : null,
-                                  tooltip: 'Flip camera',
-                                ),
-                              ),
-                            ),
-
-                            // Camera info - bottom center
-                            Positioned(
-                              bottom: 100,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.7),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      _cameras != null &&
-                                              _selectedCameraIndex <
-                                                  _cameras!.length
-                                          ? _cameras![_selectedCameraIndex]
-                                                        .lensDirection ==
-                                                    CameraLensDirection.back
-                                                ? 'Back Camera'
-                                                : 'Front Camera'
-                                          : 'Camera',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    if (_cameras != null &&
-                                        _cameras!.length > 1)
-                                      Text(
-                                        'Tap flip icon to switch cameras',
-                                        style: TextStyle(
-                                          color: Colors.white.withOpacity(0.7),
-                                          fontSize: 12,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            // Focus indicator (optional)
+                            // Focus indicator in center
                             Center(
                               child: Container(
                                 width: 200,
                                 height: 200,
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: Colors.white.withOpacity(0.5),
+                                    color: Colors.white.withAlpha(122),
                                     width: 2,
                                   ),
                                   borderRadius: BorderRadius.circular(8),
@@ -507,13 +294,102 @@ class _CameraScreenState extends State<CameraScreen>
                                   margin: const EdgeInsets.all(50),
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                      color: Colors.white.withOpacity(0.3),
+                                      color: Colors.white.withAlpha(75),
                                       width: 1,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
+
+                            // Camera controls row - bottom positioned for easy thumb access
+                            Positioned(
+                              bottom: 30,
+                              left: 0,
+                              right: 0,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  // Flash toggle button - bottom left
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withAlpha(178),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    child: IconButton(
+                                      icon: Icon(
+                                        _isFlashOn
+                                            ? Icons.flash_on
+                                            : Icons.flash_off,
+                                        color: _isFlashOn
+                                            ? Colors.yellow
+                                            : Colors.white,
+                                        size: 32,
+                                      ),
+                                      onPressed: _toggleFlash,
+                                      tooltip: _isFlashOn
+                                          ? 'Turn off flash'
+                                          : 'Turn on flash',
+                                      padding: const EdgeInsets.all(12),
+                                    ),
+                                  ),
+
+                                  // Camera flip button - bottom right
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withAlpha(178),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    child: IconButton(
+                                      icon: const Icon(
+                                        Icons.flip_camera_ios,
+                                        color: Colors.white,
+                                        size: 32,
+                                      ),
+                                      onPressed:
+                                          _cameras != null &&
+                                              _cameras!.length > 1
+                                          ? _flipCamera
+                                          : null,
+                                      tooltip: 'Flip camera',
+                                      padding: const EdgeInsets.all(12),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // // Optional: Settings/info button at top right (less frequently used)
+                            // Positioned(
+                            //   top: 20,
+                            //   right: 20,
+                            //   child: Container(
+                            //     decoration: BoxDecoration(
+                            //       color: Colors.black.withOpacity(0.5),
+                            //       borderRadius: BorderRadius.circular(20),
+                            //     ),
+                            //     child: IconButton(
+                            //       icon: const Icon(
+                            //         Icons.info_outline,
+                            //         color: Colors.white,
+                            //         size: 24,
+                            //       ),
+                            //       onPressed: () {
+                            //         ScaffoldMessenger.of(context).showSnackBar(
+                            //           SnackBar(
+                            //             content: Text(
+                            //               'Resolution: ${_controller?.value.previewSize?.width.toInt()}x${_controller?.value.previewSize?.height.toInt()}\n'
+                            //               'Flash: ${_isFlashOn ? "On" : "Off"}\n'
+                            //               'Camera: ${_cameras != null && _selectedCameraIndex < _cameras!.length ? _cameras![_selectedCameraIndex].name : "Unknown"}',
+                            //             ),
+                            //             duration: const Duration(seconds: 3),
+                            //           ),
+                            //         );
+                            //       },
+                            //       tooltip: 'Camera info',
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
