@@ -10,9 +10,14 @@ class Routes {
   static const String upload = "upload";
 
   // Make result routes unique
-  static const String cameraResult = "camera-result"; // ? For camera flow
-  static const String uploadResult = "upload-result"; // ?  For upload flow
+  static const String cameraResult =
+      "camera-result"; // ? result via camera flow
+  static const String uploadResult =
+      "upload-result"; // ?  result via upload flow
+  static const String casesResult =
+      "cases-result"; // ?  result via clicking from cases  flow
 
+  static const String caseDetail = "case-detail";
   // static const String result = "result";
 
   static const String signInScreen = "/sign-in";

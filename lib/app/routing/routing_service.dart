@@ -6,6 +6,7 @@ import 'package:sugeye/app/layout/layout_scaffold_with_nav.dart';
 import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:sugeye/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:sugeye/features/cases/screens/case_detail_screen.dart';
 import 'package:sugeye/features/home/presentation/screens/home_screen.dart';
 import 'package:sugeye/features/cases/screens/cases_screen.dart';
 import 'package:sugeye/features/prediction/domain/entities/prediction.dart';
@@ -210,6 +211,40 @@ class RoutingService {
                 name: Routes.cases,
                 path: Routes.cases,
                 builder: (context, state) => const CasesScreen(),
+                routes: [
+                  GoRoute(
+                    parentNavigatorKey: _rootNavigatorKey,
+                    name: Routes.caseDetail,
+                    path:
+                        ':predictionId', // Path with a parameter, e.g., /cases/some-uuid
+                    builder: (context, state) {
+                      final String? predictionId =
+                          state.pathParameters['predictionId'];
+                      if (predictionId == null) {
+                        return const Scaffold(
+                          body: Center(child: Text("Case ID is missing.")),
+                        );
+                      }
+                      return CaseDetailScreen(predictionId: predictionId);
+                    },
+                  ),
+                  // GoRoute(
+                  //   parentNavigatorKey: _rootNavigatorKey,
+                  //   name: Routes.casesResult,
+                  //   path: Routes.casesResult,
+                  //   builder: (context, state) {
+                  //     Prediction? prediction = state.extra as Prediction?;
+                  //     if (prediction == null) {
+                  //       return const Scaffold(
+                  //         body: Center(
+                  //           child: Text("Prediction data not found."),
+                  //         ),
+                  //       );
+                  //     }
+                  //     return ResultScreen(prediction: prediction);
+                  //   },
+                  // ),
+                ],
               ),
             ],
           ),

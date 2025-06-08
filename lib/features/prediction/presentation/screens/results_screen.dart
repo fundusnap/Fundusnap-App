@@ -14,6 +14,8 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('📸 Result screen image URL: ${prediction.imageURL}');
+    debugPrint('📸 Image URL domain: ${Uri.parse(prediction.imageURL).host}');
     // ? prediction with the highest probability
     final PredictionTag topPrediction = prediction.predictions.reduce(
       (current, next) =>
@@ -75,6 +77,12 @@ class ResultScreen extends StatelessWidget {
                 );
               },
               errorBuilder: (context, error, stackTrace) {
+                // Add detailed error logging
+                debugPrint(
+                  '❌ Failed to load image in ResultScreen: ${prediction.imageURL}',
+                );
+                debugPrint('❌ Error: $error');
+                debugPrint('❌ StackTrace: $stackTrace');
                 return const Center(
                   child: Icon(
                     Icons.error_outline,
