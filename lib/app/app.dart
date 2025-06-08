@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/themes/light_mode.dart';
 import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart';
 // import 'package:sugeye/features/auth/data/repositories/custom_auth_repository.dart';
-// import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart';
 import 'package:sugeye/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:sugeye/features/prediction/data/repositories/prediction_repository_impl.dart';
 import 'package:sugeye/features/prediction/domain/repositories/prediction_repository.dart';
