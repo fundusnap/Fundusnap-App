@@ -7,7 +7,7 @@ import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:sugeye/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:sugeye/features/home/presentation/screens/home_screen.dart';
-import 'package:sugeye/features/patients/screens/patients_screen.dart';
+import 'package:sugeye/features/cases/screens/cases_screen.dart';
 import 'package:sugeye/features/prediction/domain/entities/prediction.dart';
 import 'package:sugeye/features/prediction/presentation/screens/results_screen.dart';
 import 'package:sugeye/features/profile/presentation/screens/profile_screen.dart';
@@ -203,13 +203,13 @@ class RoutingService {
               ),
             ],
           ),
-          // ? patients screen
+          // ? cases screen
           StatefulShellBranch(
             routes: [
               GoRoute(
-                name: Routes.patients,
-                path: Routes.patients,
-                builder: (context, state) => const PatientsScreen(),
+                name: Routes.cases,
+                path: Routes.cases,
+                builder: (context, state) => const CasesScreen(),
               ),
             ],
           ),

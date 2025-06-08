@@ -24,8 +24,8 @@ class LayoutScaffoldWithNav extends StatelessWidget {
         appBarTitle = "Fundusnap";
       case Routes.scan:
         appBarTitle = "Scan";
-      case Routes.patients:
-        appBarTitle = "Patients";
+      case Routes.cases:
+        appBarTitle = "Cases";
       case Routes.profile:
         appBarTitle = "Profile";
       default:
