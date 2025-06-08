@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:gap/gap.dart';
 import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart';
@@ -20,28 +21,26 @@ class _UploadScreenState extends State<UploadScreen> {
   bool _isProcessing = false; // We still use this to control the UI
   final ImagePicker _picker = ImagePicker();
 
-  // We no longer need a direct instance of the service here.
+  // Future<void> _testTokenRefresh() async {
+  //   try {
+  //     final authRepo = context.read<AuthRepository>();
+  //     final result = await authRepo.refreshToken();
 
-  Future<void> _testTokenRefresh() async {
-    try {
-      final authRepo = context.read<AuthRepository>();
-      final result = await authRepo.refreshToken();
-
-      if (!mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            result != null ? 'Refresh successful!' : 'Refresh failed!',
-          ),
-          backgroundColor: result != null ? Colors.green : Colors.red,
-        ),
-      );
-    } catch (e) {
-      print('Test refresh error: $e');
-    }
-  }
+  //     if (!mounted) {
+  //       return;
+  //     }
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(
+  //           result != null ? 'Refresh successful!' : 'Refresh failed!',
+  //         ),
+  //         backgroundColor: result != null ? Colors.green : Colors.red,
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     print('Test refresh error: $e');
+  //   }
+  // }
 
   Future<void> _pickImageFromGallery() async {
     if (_isProcessing) return;
@@ -98,17 +97,25 @@ class _UploadScreenState extends State<UploadScreen> {
           );
           debugPrint('-----------------------------------------');
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Prediction successful! Check console for details.',
-              ),
-              backgroundColor: Colors.green,
-            ),
-          );
-
-          // TODO: Later, you could navigate to a results screen from here
-          // GoRouter.of(context).pushNamed(Routes.results, extra: state.prediction);
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   const SnackBar(
+          //     content: Text(
+          //       'Prediction successful! Check console for details.',
+          //     ),
+          //     backgroundColor: Colors.green,
+          //   ),
+          // );
+          if (context.mounted) {
+            try {
+              GoRouter.of(
+                context,
+              ).pushNamed(Routes.uploadResult, extra: state.prediction);
+              // ).goNamed(Routes.uploadResult, extra: state.prediction);
+              debugPrint('✅ Navigation call successful');
+            } catch (e) {
+              debugPrint('❌ Navigation failed: $e');
+            }
+          }
         } else if (state is CreatePredictionError) {
           setState(() {
             _isProcessing = false;
@@ -156,20 +163,20 @@ class _UploadScreenState extends State<UploadScreen> {
                   onPressed: _isProcessing ? null : _pickImageFromGallery,
                 ),
                 const Gap(20),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('refresh token'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.angelBlue,
-                    foregroundColor: AppColors.bleachedCedar,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    textStyle: const TextStyle(fontSize: 16),
-                  ),
-                  onPressed: () {
-                    _testTokenRefresh();
-                  },
-                ),
-                const Gap(20),
+                // ElevatedButton.icon(
+                //   icon: const Icon(Icons.refresh),
+                //   label: const Text('refresh token'),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: AppColors.angelBlue,
+                //     foregroundColor: AppColors.bleachedCedar,
+                //     padding: const EdgeInsets.symmetric(vertical: 12),
+                //     textStyle: const TextStyle(fontSize: 16),
+                //   ),
+                //   onPressed: () {
+                //     _testTokenRefresh();
+                //   },
+                // ),
+                // const Gap(20),
                 Expanded(
                   child: Center(
                     // The UI for the image preview remains the same

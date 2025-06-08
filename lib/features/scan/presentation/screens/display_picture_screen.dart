@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:sugeye/features/prediction/presentation/cubit/create/create_prediction_cubit.dart';
 
@@ -49,19 +50,24 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
           );
           debugPrint('-----------------------------------------');
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Prediction successful! Check console for details.',
-              ),
-              backgroundColor: Colors.green,
-            ),
-          );
-
-          // After success, pop back to the camera screen
-          // Later, you might navigate to a results screen instead
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   const SnackBar(
+          //     content: Text(
+          //       'Prediction successful! Check console for details.',
+          //     ),
+          //     backgroundColor: Colors.green,
+          //   ),
+          // );
           if (context.mounted) {
-            GoRouter.of(context).pop();
+            // GoRouter.of(context).pop();
+            try {
+              GoRouter.of(
+                context,
+              ).pushNamed(Routes.cameraResult, extra: state.prediction);
+              debugPrint('✅ Navigation call successful');
+            } catch (e) {
+              debugPrint('❌ Navigation failed: $e');
+            }
           }
         } else if (state is CreatePredictionError) {
           setState(() {
