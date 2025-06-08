@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/app.dart';
@@ -17,8 +18,8 @@ void _logError(String code, String? message) {
 List<CameraDescription> cameras = <CameraDescription>[];
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   // final Dio dio = Dio();
 
   final Dio dio = Dio(

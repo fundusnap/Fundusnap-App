@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/themes/light_mode.dart';
 import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart';
@@ -32,7 +34,23 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   @override
+  void initState() {
+    super.initState();
+    initialize();
+  }
+
+  void initialize() async {
+    await Future.delayed(const Duration(milliseconds: 400));
+    FlutterNativeSplash.remove();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>.value(value: widget.authRepository),
