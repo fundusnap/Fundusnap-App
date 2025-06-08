@@ -191,6 +191,7 @@ class _CameraScreenState extends State<CameraScreen>
           // ? executes when DisplayPictureScreen is popped.
           // ? maybe re-initialize or refresh camera state if needed ??,
         }); // ! especially if the user chose "Retake".
+        // _controller?.dispose();
       }
     } on CameraException catch (e) {
       if (mounted) {

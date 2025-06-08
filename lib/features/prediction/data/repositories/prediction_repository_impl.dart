@@ -60,6 +60,7 @@ class PredictionRepositoryImpl implements PredictionRepository {
         return dataList.map((item) {
           // * TEMPORARY HARD CODED FIX
           if (item['imageURL'] != null) {
+            print(item['imageURL']);
             item['imageURL'] = _normalizeImageUrl(item['imageURL']);
             debugPrint('🔧 Fixed URL: ${item['imageURL']}');
           }
@@ -87,6 +88,7 @@ class PredictionRepositoryImpl implements PredictionRepository {
       if (response.statusCode == 200 && response.data['status'] == 'success') {
         // * TEMPORARY HARD CODED FIX
         if (response.data['data']['imageURL'] != null) {
+          print(response.data['data']['imageURL']);
           response.data['data']['imageURL'] = _normalizeImageUrl(
             response.data['data']['imageURL'],
           );
