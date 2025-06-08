@@ -16,12 +16,14 @@ import 'package:sugeye/features/prediction/presentation/cubit/list/prediction_li
 class App extends StatefulWidget {
   const App({
     required this.router,
+    required this.authRepository,
     required this.authCubit,
     required this.dio,
     super.key,
   });
 
   final AuthCubit authCubit;
+  final AuthRepository authRepository;
   final GoRouter router;
   final Dio dio;
 
@@ -30,19 +32,15 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(
-          create: (_) => PredictionRepositoryImpl(
+        RepositoryProvider<AuthRepository>.value(value: widget.authRepository),
+        RepositoryProvider<PredictionRepository>(
+          create: (context) => PredictionRepositoryImpl(
             dio: widget.dio,
-            authRepository: context.read<AuthRepository>(),
+            authRepository: widget.authRepository,
           ),
         ),
       ],
@@ -50,17 +48,17 @@ class _AppState extends State<App> {
         providers: [
           BlocProvider<AuthCubit>.value(value: widget.authCubit),
           BlocProvider<CreatePredictionCubit>(
-            create: (_) => CreatePredictionCubit(
+            create: (context) => CreatePredictionCubit(
               predictionRepository: context.read<PredictionRepository>(),
             ),
           ),
           BlocProvider<PredictionDetailCubit>(
-            create: (_) => PredictionDetailCubit(
+            create: (context) => PredictionDetailCubit(
               predictionRepository: context.read<PredictionRepository>(),
             ),
           ),
           BlocProvider<PredictionListCubit>(
-            create: (_) => PredictionListCubit(
+            create: (context) => PredictionListCubit(
               predictionRepository: context.read<PredictionRepository>(),
             ),
           ),

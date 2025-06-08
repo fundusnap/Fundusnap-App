@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/layout/layout_scaffold_with_nav.dart';
 import 'package:sugeye/app/routing/routes.dart';
@@ -8,6 +9,8 @@ import 'package:sugeye/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:sugeye/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:sugeye/features/home/presentation/screens/home_screen.dart';
 import 'package:sugeye/features/patients/screens/patients_screen.dart';
+import 'package:sugeye/features/prediction/domain/repositories/prediction_repository.dart';
+import 'package:sugeye/features/prediction/presentation/cubit/create/create_prediction_cubit.dart';
 import 'package:sugeye/features/profile/presentation/screens/profile_screen.dart';
 import 'package:sugeye/features/scan/presentation/screens/camera_screen.dart';
 import 'package:sugeye/features/scan/presentation/screens/display_picture_screen.dart';
@@ -159,6 +162,7 @@ class RoutingService {
                     name: Routes.upload,
                     path: Routes.upload,
                     builder: (context, state) => const UploadScreen(),
+                    // ),
                   ),
                 ],
               ),

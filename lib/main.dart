@@ -31,5 +31,12 @@ void main() async {
   } on CameraException catch (e) {
     _logError(e.code, e.description);
   }
-  runApp(App(router: router, authCubit: authCubit, dio: dio));
+  runApp(
+    App(
+      router: router,
+      authRepository: authRepository,
+      authCubit: authCubit,
+      dio: dio,
+    ),
+  );
 }
