@@ -1,0 +1,80 @@
+{
+    "status": "success",
+    "message": "Login Success",
+    "data": {
+        "email": "dro@gmail.com",
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRyb0BnbWFpbC5jb20iLCJhdXRoIjoiZW1haWwiLCJpYXQiOjE3NDk0MTAxNzMsImV4cCI6MTc0OTQxMTA3M30.vp4FZENl87k2dpOWyQ1J5r-aTigqK6omijzxNdJzJTU",
+        "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRyb0BnbWFpbC5jb20iLCJhdXRoIjoiZW1haWwiLCJpYXQiOjE3NDk0MTAxNzMsImV4cCI6MTc1MjAwMjE3M30.a1W8ZL5EOZpMT5MX-x6MX9pSMXb8NXIuEwNazz-YtvQ"
+    }
+}
+
+POST
+https://api.fundusnap.com/service/chat/create
+{
+    "predictionID": "b42b7a62-1504-45f5-b766-75fa7b6f157a",
+    "query": "Explain my diabetic retinopathy probability"
+}
+
+{
+    "status": "success",
+    "message": "Successfuly create new chat",
+    "data": {
+        "id": "6845e251374cbdcd61c1a732",
+        "response": "The results from your diabetic retinopathy (DR) assessment indicate the following probabilities for each stage:  \n\n### **Key Findings**  \n1. **Mild (or early) Non-Proliferative Diabetic Retinopathy (NPDR)**: **99.99%**  \n   - This is the **most likely diagnosis**. Mild NPDR marks the earliest detectable stage of diabetic eye damage. At this stage, tiny blood vessel abnormalities (microaneurysms) in the retina may be present, but vision is typically unaffected. Regular monitoring and blood sugar control are critical to prevent progression.  \n\n2. **Other Stages**:  \n   - **Advanced Proliferative DR (PDR)**: 0.0024%  \n   - **Moderate NPDR**: 0.0017%  \n   - **No DR**: 0.0009%  \n   - **Severe NPDR**: Near 0%  \n   - **Proliferative DR (PDR)**: Near 0%  \n   - These probabilities are *extremely low*, suggesting the AI model is highly confident in the \"Mild NPDR\" classification.  \n\n---\n\n### **What This Means**  \n- **Early detection is key**: Mild NPDR often has no symptoms but signals the need for stricter diabetes management (blood sugar, blood pressure, cholesterol) and regular eye exams.  \n- **Follow up with an ophthalmologist**: While the AI model shows high confidence, only a comprehensive eye exam (e.g., dilated retina imaging, optical coherence tomography) can confirm the diagnosis and rule out complications like macular edema.  \n- **Proactive care**: Work with your healthcare team to optimize glycemic control and reduce progression risk. Untreated DR can advance to vision-threatening stages (e.g., PDR).  \n\n*Disclaimer: AI-based tools support diagnosis but are not a substitute for clinical evaluation. Always consult a specialist for medical decisions.*"
+    }
+}
+
+
+GET
+https://api.fundusnap.com/service/chat/list
+{
+    "status": "success",
+    "message": "Successfuly list chat data",
+    "data": [
+        {
+            "id": "6845e251374cbdcd61c1a732",
+            "predictionID": "b42b7a62-1504-45f5-b766-75fa7b6f157a",
+            "highlight": "The results from your diabetic retinopathy (DR) assessment indicate the following probabilities for  . . .",
+            "lastUpdated": "2025-06-08T19:19:45.565Z"
+        }
+    ]
+}
+
+GET
+https://api.fundusnap.com/service/chat/read/:id
+// 6845e251374cbdcd61c1a732
+{
+    "status": "success",
+    "message": "Successfuly read chat data",
+    "data": {
+        "predictionID": "b42b7a62-1504-45f5-b766-75fa7b6f157a",
+        "chats": [
+            {
+                "content": "Explain my diabetic retinopathy probability",
+                "role": "user",
+                "time": "2025-06-08T19:19:25.460Z"
+            },
+            {
+                "content": "The results from your diabetic retinopathy (DR) assessment indicate the following probabilities for each stage:  \n\n### **Key Findings**  \n1. **Mild (or early) Non-Proliferative Diabetic Retinopathy (NPDR)**: **99.99%**  \n   - This is the **most likely diagnosis**. Mild NPDR marks the earliest detectable stage of diabetic eye damage. At this stage, tiny blood vessel abnormalities (microaneurysms) in the retina may be present, but vision is typically unaffected. Regular monitoring and blood sugar control are critical to prevent progression.  \n\n2. **Other Stages**:  \n   - **Advanced Proliferative DR (PDR)**: 0.0024%  \n   - **Moderate NPDR**: 0.0017%  \n   - **No DR**: 0.0009%  \n   - **Severe NPDR**: Near 0%  \n   - **Proliferative DR (PDR)**: Near 0%  \n   - These probabilities are *extremely low*, suggesting the AI model is highly confident in the \"Mild NPDR\" classification.  \n\n---\n\n### **What This Means**  \n- **Early detection is key**: Mild NPDR often has no symptoms but signals the need for stricter diabetes management (blood sugar, blood pressure, cholesterol) and regular eye exams.  \n- **Follow up with an ophthalmologist**: While the AI model shows high confidence, only a comprehensive eye exam (e.g., dilated retina imaging, optical coherence tomography) can confirm the diagnosis and rule out complications like macular edema.  \n- **Proactive care**: Work with your healthcare team to optimize glycemic control and reduce progression risk. Untreated DR can advance to vision-threatening stages (e.g., PDR).  \n\n*Disclaimer: AI-based tools support diagnosis but are not a substitute for clinical evaluation. Always consult a specialist for medical decisions.*",
+                "role": "assistant",
+                "time": "2025-06-08T19:19:45.565Z"
+            }
+        ]
+    }
+}
+
+PUT
+https://api.fundusnap.com/service/chat/reply
+{
+    "id": "6845e251374cbdcd61c1a732",
+    "query": "Is there a chance it could be fatal?"
+}
+
+{
+    "status": "success",
+    "message": "Successfuly add new chat reply",
+    "data": {
+        "id": "6845e251374cbdcd61c1a732",
+        "response": "Diabetic retinopathy (DR) itself is **not directly fatal**, as it primarily affects the eyes and not vital organs. However, its presence often signals broader health risks related to **poorly controlled diabetes**, which *can* contribute to life-threatening complications if unmanaged. Here’s what to know:\n\n---\n\n### **Key Points**  \n1. **DR as a Warning Sign**:  \n   - DR is a **complication of diabetes**, not a standalone fatal condition. Its progression reflects long-term high blood sugar levels, which damage blood vessels *throughout the body*.  \n   - If diabetes is poorly controlled, it raises the risk of **systemic complications** (e.g., heart disease, kidney failure, strokes) that *can* be life-threatening.  \n\n2. **Eye-Specific Risks**:  \n   - Advanced DR (e.g., proliferative DR) can cause severe vision loss or blindness but is not fatal. Complications like retinal detachment or glaucoma require urgent treatment but do not directly threaten life.  \n\n3. **Indirect Mortality Risks**:  \n   - People with diabetes and DR often have **comorbidities** like hypertension, high cholesterol, or kidney disease, which heighten cardiovascular risks.  \n   - **Acute diabetic emergencies** (e.g., severe hypoglycemia, diabetic ketoacidosis) are *unrelated to DR* but can be fatal if untreated.  \n\n---\n\n### **Your Case: Mild NPDR**  \n- Your AI results (99.99% probability of **mild NPDR**) suggest **early-stage changes** with minimal immediate risk to vision or overall health.  \n- **Proactive steps** (blood sugar control, regular screenings, managing blood pressure/cholesterol) can *reduce progression risks* and systemic complications.  \n\n---\n\n### **Action Steps**  \n- **Prioritize diabetes management**: Work with your healthcare team to optimize blood glucose, blood pressure, and cholesterol.  \n- **Annual eye exams**: Even mild DR requires monitoring to catch progression early.  \n- **Address systemic risks**: Screen for heart/kidney health, as diabetes-related organ damage poses greater mortality risks than DR itself.  \n\n*In short: DR isn’t fatal, but it’s a critical reminder to manage diabetes holistically to avoid more dangerous complications.*"
+    }
+}
