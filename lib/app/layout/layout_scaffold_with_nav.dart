@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:sugeye/app/layout/destinations.dart';
 import 'package:sugeye/app/routing/routes.dart';
 
@@ -24,6 +24,9 @@ class LayoutScaffoldWithNav extends StatelessWidget {
         appBarTitle = "Fundusnap";
       case Routes.scan:
         appBarTitle = "Scan";
+      case Routes.fundusAi:
+        appBarTitle = "FundusAI";
+
       case Routes.cases:
         appBarTitle = "Cases";
       case Routes.profile:

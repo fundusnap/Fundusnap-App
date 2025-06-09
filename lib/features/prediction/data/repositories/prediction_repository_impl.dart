@@ -10,18 +10,6 @@ class PredictionRepositoryImpl implements PredictionRepository {
 
   PredictionRepositoryImpl({required Dio dio}) : _dio = dio;
 
-  // Helper method to fix inconsistent image URLs
-  String _normalizeImageUrl(String originalUrl) {
-    // Replace broken CDN domain with working Azure Blob Storage domain
-    if (originalUrl.contains('cdn.fundusmap.com')) {
-      return originalUrl.replaceAll(
-        'cdn.fundusmap.com',
-        'fundusnapstorage.blob.core.windows.net',
-      );
-    }
-    return originalUrl;
-  }
-
   @override
   Future<Prediction> createPrediction({required File imageFile}) async {
     try {
@@ -57,12 +45,6 @@ class PredictionRepositoryImpl implements PredictionRepository {
       if (response.statusCode == 200 && response.data['status'] == 'success') {
         final List<dynamic> dataList = response.data['data'];
         return dataList.map((item) {
-          // * TEMPORARY HARD CODED FIX
-          // if (item['imageURL'] != null) {
-          //   print(item['imageURL']);
-          //   item['imageURL'] = _normalizeImageUrl(item['imageURL']);
-          //   debugPrint('🔧 Fixed URL: ${item['imageURL']}');
-          // }
           return PredictionSummary.fromJson(item);
         }).toList();
       } else {
@@ -85,16 +67,6 @@ class PredictionRepositoryImpl implements PredictionRepository {
       final response = await _dio.get("/service/predict/read/$predictionId");
 
       if (response.statusCode == 200 && response.data['status'] == 'success') {
-        // * TEMPORARY HARD CODED FIX
-        // if (response.data['data']['imageURL'] != null) {
-        //   print(response.data['data']['imageURL']);
-        //   response.data['data']['imageURL'] = _normalizeImageUrl(
-        //     response.data['data']['imageURL'],
-        //   );
-        //   debugPrint(
-        //     '🔧 Fixed detail URL: ${response.data['data']['imageURL']}',
-        //   );
-        // }
         return Prediction.fromJson(response.data['data']);
       } else {
         throw PredictionException(

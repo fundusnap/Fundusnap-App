@@ -7,6 +7,8 @@ import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:sugeye/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:sugeye/features/cases/presentation/screens/case_detail_screen.dart';
+import 'package:sugeye/features/fundus_ai/presentation/screens/chat_screen.dart';
+import 'package:sugeye/features/fundus_ai/presentation/screens/fundus_ai_screen.dart';
 import 'package:sugeye/features/home/presentation/screens/home_screen.dart';
 import 'package:sugeye/features/cases/presentation/screens/cases_screen.dart';
 import 'package:sugeye/features/prediction/domain/entities/prediction.dart';
@@ -126,6 +128,7 @@ class RoutingService {
               ),
             ],
           ),
+
           // ? scan screen
           StatefulShellBranch(
             routes: [
@@ -204,6 +207,24 @@ class RoutingService {
               ),
             ],
           ),
+          // ? fundus ai screen (this will show all the possible chat available)
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                name: Routes.fundusAi,
+                path: Routes.fundusAi,
+                builder: (context, state) => const FundusAiScreen(),
+                routes: [
+                  // ? this will be the chat screen (if you see more better routing than feel free to suggest)
+                  GoRoute(
+                    name: Routes.chat,
+                    path: 'chatId',
+                    builder: (context, state) => const ChatScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
           // ? cases screen
           StatefulShellBranch(
             routes: [
@@ -232,6 +253,7 @@ class RoutingService {
               ),
             ],
           ),
+
           // ? profile screen
           StatefulShellBranch(
             routes: [

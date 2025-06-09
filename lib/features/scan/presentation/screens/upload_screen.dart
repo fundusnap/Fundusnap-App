@@ -22,27 +22,6 @@ class _UploadScreenState extends State<UploadScreen> {
   bool _isProcessing = false; // We still use this to control the UI
   final ImagePicker _picker = ImagePicker();
 
-  // Future<void> _testTokenRefresh() async {
-  //   try {
-  //     final authRepo = context.read<AuthRepository>();
-  //     final result = await authRepo.refreshToken();
-
-  //     if (!mounted) {
-  //       return;
-  //     }
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(
-  //           result != null ? 'Refresh successful!' : 'Refresh failed!',
-  //         ),
-  //         backgroundColor: result != null ? Colors.green : Colors.red,
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     print('Test refresh error: $e');
-  //   }
-  // }
-
   Future<void> _pickImageFromGallery() async {
     if (_isProcessing) return;
     try {
@@ -154,20 +133,6 @@ class _UploadScreenState extends State<UploadScreen> {
                   onPressed: _isProcessing ? null : _pickImageFromGallery,
                 ),
                 const Gap(20),
-                // ElevatedButton.icon(
-                //   icon: const Icon(Icons.refresh),
-                //   label: const Text('refresh token'),
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: AppColors.angelBlue,
-                //     foregroundColor: AppColors.bleachedCedar,
-                //     padding: const EdgeInsets.symmetric(vertical: 12),
-                //     textStyle: const TextStyle(fontSize: 16),
-                //   ),
-                //   onPressed: () {
-                //     _testTokenRefresh();
-                //   },
-                // ),
-                // const Gap(20),
                 Expanded(
                   child: Center(
                     // ? UI for the image preview
