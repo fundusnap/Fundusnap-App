@@ -146,7 +146,7 @@ class ResultScreen extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              GoRouter.of(context).goNamed(
+              GoRouter.of(context).pushNamed(
                 Routes.chat,
                 extra: <String, dynamic>{'predictionId': prediction.id},
               );

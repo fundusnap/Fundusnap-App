@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -78,7 +80,6 @@ class _CameraScreenState extends State<CameraScreen>
         return;
       }
 
-      // Get the main back camera (first one is usually the main camera)
       CameraDescription selectedCamera = _backCameras!.first;
 
       _controller = CameraController(
@@ -90,12 +91,32 @@ class _CameraScreenState extends State<CameraScreen>
 
       await _controller!.initialize();
 
-      // Initialize zoom levels
-      _minZoomLevel = await _controller!.getMinZoomLevel();
-      _maxZoomLevel = await _controller!.getMaxZoomLevel();
-      _currentZoomLevel = _minZoomLevel;
+      // ? disable auto macro focus by focusing once, then locking.
+      try {
+        await _controller!.setFocusMode(FocusMode.auto);
+        // ? allow time for focus to settle before locking
+        await Future.delayed(const Duration(milliseconds: 500));
+      } on CameraException catch (e) {
+        debugPrint("FocusMode.auto is not supported: ${e.description}");
+      }
+      try {
+        await _controller!.setFocusMode(FocusMode.locked);
+      } on CameraException catch (e) {
+        debugPrint("FocusMode.locked is not supported: ${e.description}");
+      }
 
-      // Restore flash state after camera initialization
+      // ? set minimum zoom to 1.0x to avoid switching to ultra-wide camera.
+      final double deviceMinZoom = await _controller!.getMinZoomLevel();
+      final double deviceMaxZoom = await _controller!.getMaxZoomLevel();
+      _minZoomLevel = max(1.0, deviceMinZoom);
+      _maxZoomLevel = deviceMaxZoom;
+
+      // ? set initial zoom to the minimum allowed (1.0x or higher)
+      _currentZoomLevel = _minZoomLevel;
+      _baseScale = _minZoomLevel;
+      await _controller!.setZoomLevel(_currentZoomLevel);
+
+      // ? restore flash state after camera initialization
       if (_isFlashOn) {
         await _controller!.setFlashMode(FlashMode.torch);
       }
@@ -124,10 +145,10 @@ class _CameraScreenState extends State<CameraScreen>
   Future<void> _handleZoom(double scale) async {
     if (_controller == null || !_controller!.value.isInitialized) return;
 
-    // Calculate new zoom level
+    // ? calculate new zoom level
     double newZoomLevel = _baseScale * scale;
 
-    // Clamp zoom level to valid range
+    // ? clamp zoom level to valid range
     newZoomLevel = newZoomLevel.clamp(_minZoomLevel, _maxZoomLevel);
 
     try {
@@ -140,17 +161,17 @@ class _CameraScreenState extends State<CameraScreen>
     }
   }
 
-  /// Handle zoom start (when user starts pinching)
+  // ? handle zoom start (when user starts pinching)
   void _handleScaleStart(ScaleStartDetails details) {
     _baseScale = _currentZoomLevel;
   }
 
-  /// Handle zoom update (during pinching)
+  // ? Handle zoom update (during pinching)
   void _handleScaleUpdate(ScaleUpdateDetails details) {
     _handleZoom(details.scale);
   }
 
-  /// Reset zoom to minimum level
+  // ? reset zoom to minimum level
   Future<void> _resetZoom() async {
     if (_controller == null || !_controller!.value.isInitialized) return;
 
@@ -275,7 +296,7 @@ class _CameraScreenState extends State<CameraScreen>
       appBar: AppBar(
         title: const Text('Capture Fundus'),
         actions: [
-          // Zoom level indicator
+          // ? zoom level indicator
           if (_isCameraInitialized)
             Padding(
               padding: const EdgeInsets.only(right: 16),
@@ -363,7 +384,7 @@ class _CameraScreenState extends State<CameraScreen>
                                 ),
                               ),
 
-                              // Camera controls
+                              // ? camera controls
                               Positioned(
                                 bottom: 80,
                                 left: 0,
@@ -386,7 +407,7 @@ class _CameraScreenState extends State<CameraScreen>
                                           : 'Turn on flash',
                                     ),
 
-                                    // Zoom reset button
+                                    // ? zoom reset button
                                     _buildControlButton(
                                       icon: Icons.zoom_out_map,
                                       color: Colors.white,
@@ -397,7 +418,7 @@ class _CameraScreenState extends State<CameraScreen>
                                 ),
                               ),
 
-                              // Zoom instructions overlay
+                              // ? zoom instructions overlay
                               Positioned(
                                 top: 20,
                                 left: 20,
@@ -426,7 +447,7 @@ class _CameraScreenState extends State<CameraScreen>
                   },
                 ),
 
-                // Loading overlay when taking picture
+                // ? loading overlay when taking picture
                 if (_isTakingPicture)
                   Container(
                     color: Colors.black.withAlpha(122),

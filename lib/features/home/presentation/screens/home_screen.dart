@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String _getWelcomeMessage(AuthState authState) {
     if (authState is AuthAuthenticated) {
       final displayName = _extractDisplayName(authState.user.email);
-      return "Welcome, Dr. $displayName";
+      return "Halo, Dr. $displayName";
     }
     return "Welcome, Doctor"; // Fallback for unauthenticated users
   }

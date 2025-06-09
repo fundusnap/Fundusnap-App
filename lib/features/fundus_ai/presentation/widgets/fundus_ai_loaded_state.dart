@@ -30,7 +30,7 @@ class FundusAiLoadedState extends StatelessWidget {
           child: RefreshIndicator(
             onRefresh: () => context.read<ChatListCubit>().fetchChats(),
             child: ListView.builder(
-              padding: EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
               itemCount: chats.length,
               itemBuilder: (context, index) {
                 return ChatSummaryCard(chatSummary: chats[index], index: index);
