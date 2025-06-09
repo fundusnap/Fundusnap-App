@@ -35,7 +35,7 @@ class ProfileActionButtons extends StatelessWidget {
 
         // Version info
         Text(
-          'FundusEye v1.0.0',
+          'Fundusnap v1.0.0',
           style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
         ),
       ],
