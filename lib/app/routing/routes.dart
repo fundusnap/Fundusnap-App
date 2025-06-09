@@ -22,10 +22,7 @@ class Routes {
   static const String chat = "chat";
 
   static const String caseDetail = "case-detail";
-  // static const String result = "result";
 
   static const String signInScreen = "/sign-in";
   static const String signUpScreen = "/sign-up";
-
-  // static const
 }

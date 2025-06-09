@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/layout/layout_scaffold_with_nav.dart';
 import 'package:sugeye/app/routing/routes.dart';
+import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:sugeye/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:sugeye/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:sugeye/features/cases/presentation/screens/case_detail_screen.dart';
@@ -45,8 +46,7 @@ class RoutingService {
 
   late final GoRouter router = GoRouter(
     navigatorKey: _rootNavigatorKey,
-    debugLogDiagnostics: true,
-    // initialLocation: Routes.home,
+    debugLogDiagnostics: false,
     initialLocation: Routes.signInScreen,
     refreshListenable: GoRouterRefreshStream(authCubit.stream),
     redirect: (BuildContext context, GoRouterState state) {
@@ -61,12 +61,12 @@ class RoutingService {
       final bool isAuthRoute =
           (currentPath == Routes.signInScreen ||
           currentPath == Routes.signUpScreen);
-
       if (authState is AuthLoading) {
         print("[GoRouter Redirect] AuthLoading: No redirect.");
         return null;
       }
 
+      // Handle authenticated state
       if (authState is AuthAuthenticated) {
         if (isAuthRoute) {
           print(
@@ -77,25 +77,18 @@ class RoutingService {
         print(
           "[GoRouter Redirect] Authenticated, not on AuthRoute: No redirect.",
         );
-      } else {
-        // AuthUnauthenticated, AuthInitial, AuthError
-        // If NOT authenticated and NOT on an auth route, redirect to signIn.
-        // This protects all other routes.
-        if (!isAuthRoute && currentPath == Routes.signInScreen) {
-          print(
-            "[GoRouter Redirect] Unauthenticated, not on AuthRoute: Redirecting to ${Routes.signInScreen}",
-          );
-          return Routes.signInScreen;
-        }
-        if (!isAuthRoute && currentPath == Routes.signUpScreen) {
-          print(
-            "[GoRouter Redirect] Unauthenticated, not on AuthRoute: Redirecting to ${Routes.signUpScreen}",
-          );
-          return Routes.signUpScreen;
-        }
-
-        print("[GoRouter Redirect] Unauthenticated on AuthRoute: No redirect.");
+        return null;
       }
+
+      // Handle unauthenticated states (AuthUnauthenticated, AuthInitial, AuthError)
+      if (!isAuthRoute) {
+        print(
+          "[GoRouter Redirect] Unauthenticated, not on AuthRoute: Redirecting to ${Routes.signInScreen}",
+        );
+        return Routes.signInScreen;
+      }
+      // Already on auth route and unauthenticated - no redirect needed
+      print("[GoRouter Redirect] Unauthenticated on AuthRoute: No redirect.");
       return null;
     },
 
@@ -109,6 +102,120 @@ class RoutingService {
         name: Routes.signUpScreen,
         path: Routes.signUpScreen,
         builder: (context, state) => const SignUpScreen(),
+      ),
+
+      // GoRoute(
+      //   parentNavigatorKey:
+      //       _rootNavigatorKey, // Ensures it's a full-screen route
+      //   name: Routes.chat, // A single 'chat' route
+      //   path: '/chat', // A simple, clean path
+      //   builder: (context, state) {
+      //     // We'll pass arguments in the 'extra' parameter
+      //     final args = state.extra as Map<String, String?>?;
+      //     final chatId = args?['chatId'];
+      //     final predictionId = args?['predictionId'];
+
+      //     if (chatId == null && predictionId == null) {
+      //       return const Scaffold(
+      //         body: Center(
+      //           child: Text("Chat ID or Prediction ID is required."),
+      //         ),
+      //       );
+      //     }  // Pass the IDs to the ChatScreen
+      //     return ChatScreen(chatId: chatId, predictionId: predictionId);
+      //   },
+      // ),
+      // GoRoute(
+      //   parentNavigatorKey: _rootNavigatorKey,
+      //   name: Routes.chat,
+      //   path: '/chat',
+      //   builder: (context, state) {
+      //     // Expect Map<String, dynamic> consistently
+      //     final args = state.extra as Map<String, dynamic>?;
+      //     final chatId = args?['chatId'] as String?;
+      //     final predictionId = args?['predictionId'] as String?;
+
+      //     if (chatId == null && predictionId == null) {
+      //       return const Scaffold(
+      //         body: Center(
+      //           child: Text("Chat ID or Prediction ID is required."),
+      //         ),
+      //       );
+      //     }
+      //     return ChatScreen(chatId: chatId, predictionId: predictionId);
+      //   },
+      // ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        name: Routes.chat,
+        path: '/chat',
+        builder: (context, state) {
+          try {
+            final extra = state.extra;
+            String? chatId;
+            String? predictionId;
+
+            // Safe type handling
+            if (extra is Map) {
+              chatId = extra['chatId']?.toString();
+              predictionId = extra['predictionId']?.toString();
+            }
+
+            if (chatId == null && predictionId == null) {
+              debugPrint(
+                'Chat route error: No chatId or predictionId provided. Extra: $extra',
+              );
+              return const Scaffold(
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        size: 64,
+                        color: AppColors.paleCarmine,
+                      ),
+                      SizedBox(height: 16),
+                      Text("Chat ID or Prediction ID is required."),
+                      Text(
+                        "Please try again.",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            return ChatScreen(chatId: chatId, predictionId: predictionId);
+          } catch (e, stackTrace) {
+            debugPrint('Chat route casting error: $e');
+            debugPrint('Stack trace: $stackTrace');
+            debugPrint('Extra data: ${state.extra}');
+            debugPrint('Extra type: ${state.extra.runtimeType}');
+
+            return Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: AppColors.paleCarmine,
+                    ),
+                    const SizedBox(height: 16),
+                    const Text("Navigation Error"),
+                    Text(
+                      "Error: $e",
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+        },
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -214,14 +321,23 @@ class RoutingService {
                 name: Routes.fundusAi,
                 path: Routes.fundusAi,
                 builder: (context, state) => const FundusAiScreen(),
-                routes: [
-                  // ? this will be the chat screen (if you see more better routing than feel free to suggest)
-                  GoRoute(
-                    name: Routes.chat,
-                    path: 'chatId',
-                    builder: (context, state) => const ChatScreen(),
-                  ),
-                ],
+                // routes: [
+                // ? this will be the chat screen (if you see more better routing than feel free to suggest)
+                // GoRoute(
+                //   name: Routes.chat,
+                //   path: ':chatId',
+                //   builder: (context, state) {
+                //     final String? chatId = state.pathParameters['chatId'];
+                //     if (chatId == null) {
+                //       return const Scaffold(
+                //         body: Center(child: Text("Chat ID is missing.")),
+                //       );
+                //     }
+                //     return ChatScreen();
+                //   },
+                // ),
+
+                // ],
               ),
             ],
           ),

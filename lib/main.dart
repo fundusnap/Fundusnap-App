@@ -20,8 +20,6 @@ List<CameraDescription> cameras = <CameraDescription>[];
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  // final Dio dio = Dio();
-
   final Dio dio = Dio(
     BaseOptions(
       baseUrl: 'https://api.fundusnap.com',

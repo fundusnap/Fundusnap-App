@@ -6,6 +6,7 @@ import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:sugeye/features/prediction/domain/entities/prediction.dart';
 import 'package:sugeye/features/prediction/domain/entities/prediction_tag.dart';
+import 'package:sugeye/features/prediction/presentation/widgets/summary_row.dart';
 
 class ResultScreen extends StatelessWidget {
   final Prediction prediction;
@@ -111,19 +112,19 @@ class ResultScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _SummaryRow(
+                SummaryRow(
                   label: 'Scan Date',
                   value: DateFormat.yMMMMd().format(
                     prediction.created,
                   ), // ?  e.g., June 8, 2025
                 ),
                 const Divider(),
-                const _SummaryRow(
+                const SummaryRow(
                   label: 'AI Model',
                   value: 'RetinaScan v1.2', //  ? Placeholder
                 ),
                 const Divider(),
-                _SummaryRow(
+                SummaryRow(
                   label: 'Confidence',
                   value:
                       '${(topPrediction.probability * 100).toStringAsFixed(0)}%',
@@ -145,14 +146,17 @@ class ResultScreen extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              // TODO: Implement navigation to chatbot
+              GoRouter.of(context).goNamed(
+                Routes.chat,
+                extra: <String, dynamic>{'predictionId': prediction.id},
+              );
+              // ).pushNamed(Routes.chat, extra: {'predictionId': prediction.id});
             },
             child: const Text('Ask FundusAI'),
           ),
           const Gap(12),
           TextButton(
             onPressed: () {
-              // TODO: Implement scheduling logic or navigation
               GoRouter.of(context).goNamed(Routes.home);
             },
             child: const Text(
@@ -163,43 +167,6 @@ class ResultScreen extends StatelessWidget {
                 color: AppColors.veniceBlue,
                 fontWeight: FontWeight.bold,
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ? Helper widget for a row in the summary card
-class _SummaryRow extends StatelessWidget {
-  final String label;
-  final String value;
-  final Color? valueColor;
-
-  const _SummaryRow({
-    required this.label,
-    required this.value,
-    this.valueColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(color: AppColors.gray, fontSize: 16),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              color: valueColor ?? AppColors.bleachedCedar,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ],

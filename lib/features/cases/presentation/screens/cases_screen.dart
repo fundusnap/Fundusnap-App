@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:go_router/go_router.dart';
-// import 'package:sugeye/app/routing/routes.dart';
-// import 'package:sugeye/app/themes/app_colors.dart';
 import 'package:sugeye/features/cases/presentation/widgets/cases_error_state.dart';
 import 'package:sugeye/features/cases/presentation/widgets/cases_loaded_state.dart';
-// import 'package:sugeye/features/cases/presentation/widgets/prediction_case_card.dart';
-// import 'package:sugeye/features/prediction/domain/entities/prediction_summary.dart';
 import 'package:sugeye/features/prediction/presentation/cubit/list/prediction_list_cubit.dart';
 
 class CasesScreen extends StatefulWidget {

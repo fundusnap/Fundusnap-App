@@ -1,0 +1,91 @@
+{
+  "status": "success",
+  "message": "Successfuly read prediction data",
+  "data": {
+    "id": "b42b7a62-1504-45f5-b766-75fa7b6f157a",
+    "name": "New Snap (1)",
+    "description": "New Snap (1)",
+    "project": "ffdd0da0-9f9e-4376-8924-a42d8a4d35c0",
+    "iteration": "82400348-98d0-4bb6-bbb5-5df0695d1023",
+    "created": "2025-06-08T10:26:17.596Z",
+    "predictions": [
+      {
+        "probability": 0.99994874,
+        "tagId": "0cbe4213-3487-4e56-b234-003a0ae16387",
+        "tagName": "Mild (or early) NPDR"
+      },
+      {
+        "probability": 0.000024431081,
+        "tagId": "42b908e1-cebf-4d0b-b28c-518c20d5943f",
+        "tagName": "Advanced PDR"
+      },
+      {
+        "probability": 0.000017041904,
+        "tagId": "154494bd-f560-4ac7-a1fd-9711f17e0710",
+        "tagName": "Moderate NPDR"
+      },
+      {
+        "probability": 0.000009302089,
+        "tagId": "0bf6d4de-e7c0-4ce2-9fc3-21d9f6c09f25",
+        "tagName": "No DR"
+      },
+      {
+        "probability": 5.1685294e-7,
+        "tagId": "7c1d228b-a00e-45e9-8f06-e86139cc6e1e",
+        "tagName": "PDR"
+      },
+      {
+        "probability": 1.2469983e-8,
+        "tagId": "e1cd417d-cdb0-48fa-ad0e-49d20b8aac6a",
+        "tagName": "Severe NPDR"
+      }
+    ],
+    "chatID": "6845e251374cbdcd61c1a732",
+    "imageURL": "https://fundusnapstorage.blob.core.windows.net/predict/b42b7a62-1504-45f5-b766-75fa7b6f157a?sv=2025-05-05&st=2025-06-09T06%3A18%3A04Z&se=2025-06-09T07%3A18%3A04Z&sr=b&sp=r&sig=u3CKjoHqm1RX9UgMpIWydkQsq4Y6xQ2Qq54jg3VvEV0%3D"
+  }
+}
+{
+    "status": "success",
+    "message": "Successfuly read prediction data",
+    "data": {
+        "id": "fe8e38b4-4e8f-4925-a74e-f06cd7ca1299",
+        "name": "New Snap (2)",
+        "description": "New Snap (2)",
+        "project": "ffdd0da0-9f9e-4376-8924-a42d8a4d35c0",
+        "iteration": "82400348-98d0-4bb6-bbb5-5df0695d1023",
+        "created": "2025-06-08T10:36:29.384Z",
+        "predictions": [
+            {
+                "probability": 0.99994874,
+                "tagId": "0cbe4213-3487-4e56-b234-003a0ae16387",
+                "tagName": "Mild (or early) NPDR"
+            },
+            {
+                "probability": 0.000024431081,
+                "tagId": "42b908e1-cebf-4d0b-b28c-518c20d5943f",
+                "tagName": "Advanced PDR"
+            },
+            {
+                "probability": 0.000017041904,
+                "tagId": "154494bd-f560-4ac7-a1fd-9711f17e0710",
+                "tagName": "Moderate NPDR"
+            },
+            {
+                "probability": 0.000009302089,
+                "tagId": "0bf6d4de-e7c0-4ce2-9fc3-21d9f6c09f25",
+                "tagName": "No DR"
+            },
+            {
+                "probability": 5.1685294e-7,
+                "tagId": "7c1d228b-a00e-45e9-8f06-e86139cc6e1e",
+                "tagName": "PDR"
+            },
+            {
+                "probability": 1.2469983e-8,
+                "tagId": "e1cd417d-cdb0-48fa-ad0e-49d20b8aac6a",
+                "tagName": "Severe NPDR"
+            }
+        ],
+        "imageURL": "https://fundusnapstorage.blob.core.windows.net/predict/fe8e38b4-4e8f-4925-a74e-f06cd7ca1299?sv=2025-05-05&st=2025-06-09T06%3A19%3A16Z&se=2025-06-09T07%3A19%3A16Z&sr=b&sp=r&sig=SIFk8EXKG9x9L2C85MAXc2xltoh6ZCI4hRt2bTpQJ0Q%3D"
+    }
+},

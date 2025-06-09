@@ -8,6 +8,10 @@ import 'package:sugeye/app/themes/light_mode.dart';
 import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart';
 // import 'package:sugeye/features/auth/data/repositories/custom_auth_repository.dart';
 import 'package:sugeye/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:sugeye/features/fundus_ai/data/repositories/chat_repository_impl.dart';
+import 'package:sugeye/features/fundus_ai/domain/repositories/chat_repository.dart';
+import 'package:sugeye/features/fundus_ai/presentation/cubit/conversation/chat_conversation_cubit.dart';
+import 'package:sugeye/features/fundus_ai/presentation/cubit/list/chat_list_cubit.dart';
 import 'package:sugeye/features/prediction/data/repositories/prediction_repository_impl.dart';
 import 'package:sugeye/features/prediction/domain/repositories/prediction_repository.dart';
 import 'package:sugeye/features/prediction/presentation/cubit/create/create_prediction_cubit.dart';
@@ -57,6 +61,9 @@ class _AppState extends State<App> {
         RepositoryProvider<PredictionRepository>(
           create: (context) => PredictionRepositoryImpl(dio: widget.dio),
         ),
+        RepositoryProvider<ChatRepository>(
+          create: (context) => ChatRepositoryImpl(dio: widget.dio),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -76,6 +83,15 @@ class _AppState extends State<App> {
               predictionRepository: context.read<PredictionRepository>(),
             ),
           ),
+          BlocProvider<ChatListCubit>(
+            create: (context) =>
+                ChatListCubit(chatRepository: context.read<ChatRepository>()),
+          ),
+          // BlocProvider<ChatConversationCubit>(
+          //   create: (context) => ChatConversationCubit(
+          //     chatRepository: context.read<ChatRepository>(),
+          //   ),
+          // ),
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,

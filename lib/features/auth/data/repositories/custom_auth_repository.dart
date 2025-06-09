@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert'; // For jsonEncode if needed, and for potential error parsing
+// import 'dart:convert'; // For jsonEncode if needed, and for potential error parsing
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:sugeye/features/auth/domain/entities/app_user.dart';
@@ -7,8 +7,7 @@ import 'package:sugeye/features/auth/domain/repositories/auth_repository.dart'; 
 
 const String _accessTokenKey = 'access_token';
 const String _refreshTokenKey = 'refresh_token';
-const String _userEmailKey =
-    'user_email'; // If you want to store email separately
+const String _userEmailKey = 'user_email'; // If want to store email separately
 
 class CustomAuthRepositoryImpl implements AuthRepository {
   final Dio _dio;
