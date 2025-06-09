@@ -39,8 +39,10 @@ class LayoutScaffoldWithNav extends StatelessWidget {
           appBarTitle,
           style: TextStyle(
             fontFamily: appBarTitle == "Fundusnap"
-                ? GoogleFonts.majorMonoDisplay().fontFamily
+                // ? GoogleFonts.majorMonoDisplay().fontFamily
+                ? GoogleFonts.poppins().fontFamily
                 : null,
+            letterSpacing: appBarTitle == "Fundusnap" ? 2.5 : 1.1,
             fontWeight: appBarTitle == "Fundusnap" ? FontWeight.bold : null,
           ),
         ),

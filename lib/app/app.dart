@@ -80,7 +80,7 @@ class _AppState extends State<App> {
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Fundusnap',
-          theme: sugeyeLightTheme,
+          theme: fundusnapLightTheme,
           routerConfig: widget.router,
         ),
       ),
