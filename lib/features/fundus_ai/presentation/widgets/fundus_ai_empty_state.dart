@@ -39,7 +39,7 @@ class FundusAiEmptyState extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
                   Text(
-                    'No Conversations Yet',
+                    'Belum Ada Percakapan',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.angelBlue,
@@ -47,7 +47,7 @@ class FundusAiEmptyState extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Start analyzing your retinal scans to begin conversations with FundusAI',
+                    'Mulai analisis pemindaian fundus Anda untuk memulai percakapan dengan FundusAI',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.grey.shade600,
@@ -60,20 +60,21 @@ class FundusAiEmptyState extends StatelessWidget {
                   // Feature highlights
                   const FeatureCard(
                     icon: Icons.visibility,
-                    title: 'Analyze Scans',
-                    description: 'Get AI insights on diabetic retinopathy',
+                    title: 'Analisis Pemindaian',
+                    description:
+                        'Dapatkan wawasan AI tentang retinopati diabetik',
                   ),
                   const SizedBox(height: 12),
                   const FeatureCard(
                     icon: Icons.chat_bubble_outline,
-                    title: 'Ask Questions',
-                    description: 'Chat about results and recommendations',
+                    title: 'Ajukan Pertanyaan',
+                    description: 'Chat tentang hasil dan rekomendasi',
                   ),
                   const SizedBox(height: 12),
                   const FeatureCard(
                     icon: Icons.history,
-                    title: 'View History',
-                    description: 'Access all your previous conversations',
+                    title: 'Lihat Riwayat',
+                    description: 'Akses semua percakapan sebelumnya',
                   ),
                 ],
               ),

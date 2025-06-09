@@ -67,7 +67,7 @@ class FundusAiHeader extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Your AI-powered retinal analysis assistant',
+                        'Asisten analisis retina bertenaga AI Anda',
                         style: TextStyle(
                           color: Colors.white.withAlpha(200),
                           fontSize: 14,

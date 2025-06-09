@@ -15,7 +15,7 @@ class ScanScreen extends StatelessWidget {
       children: <Widget>[
         const Gap(25),
         const Text(
-          'Retina Scan Options',
+          'Opsi Pemindaian Fundus',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 26,
@@ -25,7 +25,7 @@ class ScanScreen extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          'To detect Diabetic Retinopathy, you can either capture a new image of the fundus or upload an existing one.',
+          'Untuk mendeteksi Retinopati Diabetik, Anda dapat mengambil gambar fundus baru atau mengunggah gambar yang sudah ada.',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
@@ -36,7 +36,7 @@ class ScanScreen extends StatelessWidget {
         const SizedBox(height: 40),
         ScanOptionButton(
           icon: Icons.camera_alt_outlined,
-          label: 'Capture New Image',
+          label: 'Ambil Gambar Baru',
           backgroundColor: AppColors.veniceBlue,
           textColor: AppColors.white,
           onPressed: () {
@@ -46,7 +46,7 @@ class ScanScreen extends StatelessWidget {
         const SizedBox(height: 20),
         ScanOptionButton(
           icon: Icons.upload_file_outlined,
-          label: 'Upload Existing Image',
+          label: 'Unggah Gambar yang Ada',
           backgroundColor: AppColors.angelBlue,
           textColor: AppColors.bleachedCedar,
           onPressed: () {
@@ -65,7 +65,7 @@ class ScanScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Quick Guide:',
+                'Panduan Singkat:',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -76,17 +76,19 @@ class ScanScreen extends StatelessWidget {
               GuideRow(
                 icon: Icons.remove_red_eye_outlined,
                 text:
-                    'Ensure the special lens is correctly attached to your smartphone.',
+                    'Pastikan Funduslens terpasang dengan benar pada smartphone Anda.',
               ),
               SizedBox(height: 6),
               GuideRow(
                 icon: Icons.lightbulb_outline,
-                text: 'Find a dimly lit room for better image quality.',
+                text:
+                    'Cari ruangan dengan pencahayaan redup untuk kualitas gambar yang lebih baik.',
               ),
               SizedBox(height: 6),
               GuideRow(
                 icon: Icons.center_focus_strong_outlined,
-                text: 'Try to keep the eye steady and focused during capture.',
+                text:
+                    'Usahakan mata tetap stabil dan fokus selama pengambilan gambar.',
               ),
             ],
           ),

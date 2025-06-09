@@ -294,7 +294,7 @@ class _CameraScreenState extends State<CameraScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Capture Fundus'),
+        title: const Text('Ambil Fundus'),
         actions: [
           // ? zoom level indicator
           if (_isCameraInitialized)
@@ -419,26 +419,26 @@ class _CameraScreenState extends State<CameraScreen>
                               ),
 
                               // ? zoom instructions overlay
-                              Positioned(
-                                top: 20,
-                                left: 20,
-                                right: 20,
-                                child: Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withAlpha(128),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: const Text(
-                                    'Pinch to zoom • Focus on the center guide',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Positioned(
+                              //   top: 20,
+                              //   left: 20,
+                              //   right: 20,
+                              //   child: Container(
+                              //     padding: const EdgeInsets.all(12),
+                              //     decoration: BoxDecoration(
+                              //       color: Colors.black.withAlpha(128),
+                              //       borderRadius: BorderRadius.circular(8),
+                              //     ),
+                              //     child: const Text(
+                              //       'Pinch to zoom • Focus on the center guide',
+                              //       textAlign: TextAlign.center,
+                              //       style: TextStyle(
+                              //         color: Colors.white,
+                              //         fontSize: 12,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -458,7 +458,7 @@ class _CameraScreenState extends State<CameraScreen>
                           CircularProgressIndicator(color: AppColors.angelBlue),
                           SizedBox(height: 16),
                           Text(
-                            'Capturing image...',
+                            'Mengambil gambar...',
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ],

@@ -19,7 +19,7 @@ class CasesFilterBar extends StatelessWidget {
           const Icon(Icons.filter_list, color: AppColors.gray, size: 20),
           const SizedBox(width: 8),
           const Text(
-            'Recent Cases',
+            'Kasus Terbaru',
             style: TextStyle(
               color: AppColors.veniceBlue,
               fontWeight: FontWeight.w500,
@@ -35,7 +35,7 @@ class CasesFilterBar extends StatelessWidget {
             child: const Row(
               children: [
                 Text(
-                  'Sort',
+                  'Urutkan',
                   style: TextStyle(
                     color: AppColors.veniceBlue,
                     fontWeight: FontWeight.w500,

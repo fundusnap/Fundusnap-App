@@ -84,7 +84,7 @@ class _ChatViewState extends State<ChatView> {
                   CircularProgressIndicator(color: AppColors.angelBlue),
                   SizedBox(height: 16),
                   Text(
-                    'Loading chat history...',
+                    'Memuat riwayat obrolan...',
                     style: TextStyle(color: AppColors.gray),
                   ),
                 ],
@@ -143,29 +143,32 @@ class _ChatViewState extends State<ChatView> {
   }
 
   Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.chat_bubble_outline,
-            size: 64,
-            color: Colors.grey.shade300,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Start a conversation',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(color: Colors.grey.shade600),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Ask FundusAI about your scan results or\ngeneral questions about diabetic retinopathy',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey.shade500, fontSize: 16),
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.chat_bubble_outline,
+              size: 64,
+              color: Colors.grey.shade300,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Mulai percakapan',
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(color: Colors.grey.shade600),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Tanyakan kepada FundusAI tentang hasil pemindaian Anda atau\npertanyaan umum tentang retinopati diabetik',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey.shade500, fontSize: 16),
+            ),
+          ],
+        ),
       ),
     );
   }

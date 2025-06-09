@@ -7,10 +7,10 @@ class Destination {
 }
 
 const List<Destination> destinations = [
-  Destination(label: "Home", icon: Icons.home),
-  Destination(label: "Scan", icon: Icons.control_camera),
+  Destination(label: "Beranda", icon: Icons.home),
+  Destination(label: "Pindai", icon: Icons.control_camera),
   // Destination(label: "FundusAI", icon: Icons.forum),
   Destination(label: "FundusAI", icon: Icons.adjust),
-  Destination(label: "Cases", icon: Icons.assignment),
-  Destination(label: "Profiles", icon: Icons.person),
+  Destination(label: "Kasus", icon: Icons.assignment),
+  Destination(label: "Profil", icon: Icons.person),
 ];

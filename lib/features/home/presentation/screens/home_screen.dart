@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, authState) {
         return ListView(
           children: [
-            // Welcome Header
+            // ? welcome header
             Text(
               _getWelcomeMessage(authState),
               style: theme.textTheme.headlineMedium?.copyWith(
@@ -60,9 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const Gap(12),
 
-            // Description
+            // ? description
             Text(
-              "Start by scanning a patient's eyes to detect diabetic retinopathy. Follow the on-screen instructions for accurate results.",
+              "Mulai dengan memindai mata pasien untuk mendeteksi retinopati diabetik. Ikuti petunjuk di layar untuk hasil yang akurat.",
               style: theme.textTheme.bodyLarge,
             ),
             const Gap(16),
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               child: Text(
-                "Start Scan",
+                "Mulai Pindai",
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: AppColors.bleachedCedar,
                   fontWeight: FontWeight.bold,
@@ -100,12 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const Gap(24),
 
-            // Recent Scans Section
+            // ? recent Scans Section
             const HomeRecentScansSection(),
 
             const Gap(24),
 
-            // Did You Know Card
+            // ? did you know card
             Card(
               elevation: 2,
               shape: RoundedRectangleBorder(
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          "Did You Know?",
+                          "Apakah Anda Tahu?",
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: AppColors.veniceBlue,
@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const Gap(12),
                     Text(
-                      "Regular eye check-ups are crucial for early detection of diabetic retinopathy, especially if you have diabetes. Encourage your patients to maintain a healthy lifestyle.",
+                      "Pemeriksaan mata rutin sangat penting untuk deteksi dini retinopati diabetik, terutama jika Anda menderita diabetes. Dorong pasien Anda untuk menjaga gaya hidup sehat.",
                       style: theme.textTheme.bodyMedium,
                     ),
                   ],

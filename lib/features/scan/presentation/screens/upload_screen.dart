@@ -100,7 +100,7 @@ class _UploadScreenState extends State<UploadScreen> {
       child: Scaffold(
         appBar: AppBar(
           // title: const Text('Upload Fundus Image'),
-          title: const Text('Upload Image'),
+          title: const Text('Unggah Gambar'),
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
@@ -123,7 +123,7 @@ class _UploadScreenState extends State<UploadScreen> {
               children: <Widget>[
                 ElevatedButton.icon(
                   icon: const Icon(Icons.photo_library_outlined),
-                  label: const Text('Select Image from Gallery'),
+                  label: const Text('Pilih Gambar dari Galeri'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.angelBlue,
                     foregroundColor: AppColors.bleachedCedar,
@@ -169,7 +169,7 @@ class _UploadScreenState extends State<UploadScreen> {
                             ),
                             child: const Center(
                               child: Text(
-                                'No image selected.',
+                                'Tidak ada gambar yang dipilih.',
                                 style: TextStyle(
                                   color: AppColors.gray,
                                   fontSize: 16,
@@ -196,7 +196,7 @@ class _UploadScreenState extends State<UploadScreen> {
                           )
                         : const Icon(Icons.analytics_outlined),
                     label: Text(
-                      _isProcessing ? 'Analyzing...' : 'Analyze Image',
+                      _isProcessing ? 'Menganalisis...' : 'Analisis Gambar',
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.veniceBlue,

@@ -28,14 +28,14 @@ class ResultScreen extends StatelessWidget {
       // TODO : DYNAMIC messages
       switch (tagName) {
         case "No DR":
-          return "The AI scan did not detect any significant signs of diabetic retinopathy in the provided retinal image. Regular eye check-ups are still recommended.";
+          return "Pemindaian AI tidak mendeteksi tanda-tanda signifikan dari retinopati diabetik pada gambar retina yang diberikan. Pemeriksaan mata rutin tetap disarankan.";
         default:
-          return "The AI scan detected signs of what could be $tagName. It is highly recommended to schedule a follow-up with an ophthalmologist for a definitive diagnosis.";
+          return "Pemindaian AI mendeteksi tanda-tanda yang dapat menunjukkan $tagName. Sangat disarankan untuk menjadwalkan pemeriksaan lanjutan dengan dokter mata untuk diagnosis yang pasti.";
       }
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Scan Results')),
+      appBar: AppBar(title: const Text('Hasil Pemindaian')),
       body: ListView(
         padding: const EdgeInsets.all(20.0),
         children: <Widget>[
@@ -97,7 +97,7 @@ class ResultScreen extends StatelessWidget {
           const Gap(24),
           // ? --- Summary Section ---
           Text(
-            'Summary',
+            'Ringkasan',
             style: Theme.of(
               context,
             ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -125,7 +125,7 @@ class ResultScreen extends StatelessWidget {
                 ),
                 const Divider(),
                 SummaryRow(
-                  label: 'Confidence',
+                  label: 'Tingkat Keyakinan',
                   value:
                       '${(topPrediction.probability * 100).toStringAsFixed(0)}%',
                   valueColor: AppColors.veniceBlue,
@@ -152,7 +152,7 @@ class ResultScreen extends StatelessWidget {
               );
               // ).pushNamed(Routes.chat, extra: {'predictionId': prediction.id});
             },
-            child: const Text('Ask FundusAI'),
+            child: const Text('Tanya FundusAI'),
           ),
           const Gap(12),
           TextButton(
@@ -161,7 +161,7 @@ class ResultScreen extends StatelessWidget {
             },
             child: const Text(
               // ? 'Schedule Follow-up',
-              'Go Back to Home',
+              'Kembali ke Beranda',
               style: TextStyle(
                 fontSize: 16,
                 color: AppColors.veniceBlue,

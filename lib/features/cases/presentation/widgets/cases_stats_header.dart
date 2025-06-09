@@ -54,7 +54,7 @@ class CasesStatsHeader extends StatelessWidget {
               const Icon(Icons.analytics, color: Colors.white, size: 28),
               const SizedBox(width: 12),
               Text(
-                'Cases Overview',
+                'Ringkasan Kasus',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ class CasesStatsHeader extends StatelessWidget {
             children: [
               Expanded(
                 child: CasesStatCard(
-                  label: 'Today',
+                  label: 'Hari Ini',
                   value: todayCount.toString(),
                   icon: Icons.today,
                 ),
@@ -75,7 +75,7 @@ class CasesStatsHeader extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: CasesStatCard(
-                  label: 'This Week',
+                  label: 'Minggu Ini',
                   value: weekCount.toString(),
                   icon: Icons.date_range,
                 ),

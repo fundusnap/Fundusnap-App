@@ -14,8 +14,7 @@ class FundusAiErrorState extends StatelessWidget {
     return Column(
       children: [
         // Header
-        const FundusAiHeader(title: "Connection Issue"),
-
+        const FundusAiHeader(title: "Masalah Koneksi"),
         Expanded(
           child: Center(
             child: Padding(
@@ -37,7 +36,7 @@ class FundusAiErrorState extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Unable to Load Chat History',
+                    'Tidak Dapat Memuat Riwayat Chat',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -52,7 +51,7 @@ class FundusAiErrorState extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () => context.read<ChatListCubit>().fetchChats(),
                     icon: const Icon(Icons.refresh),
-                    label: const Text('Try Again'),
+                    label: const Text('TCoba Lagi'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.angelBlue,
                       foregroundColor: Colors.white,

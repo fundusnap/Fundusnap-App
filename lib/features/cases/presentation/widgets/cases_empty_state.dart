@@ -15,14 +15,14 @@ class CasesEmptyState extends StatelessWidget {
           Icon(Icons.folder_open, size: 96, color: Colors.grey.shade300),
           const SizedBox(height: 24),
           Text(
-            'No Cases Yet',
+            'Belum Ada Kasus',
             style: Theme.of(
               context,
             ).textTheme.headlineSmall?.copyWith(color: Colors.grey.shade600),
           ),
           const SizedBox(height: 12),
           Text(
-            'Start scanning fundus images to build your case history',
+            'Mulai scan gambar fundus untuk membangun riwayat kasus Anda',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey.shade500, fontSize: 16),
           ),
@@ -45,7 +45,7 @@ class CasesEmptyState extends StatelessWidget {
               // GoRouter.of(context).pushNamed(Routes.scan);
             },
             icon: const Icon(Icons.add_a_photo),
-            label: const Text('Start Scanning'),
+            label: const Text('Mulai Scan'),
           ),
         ],
       ),

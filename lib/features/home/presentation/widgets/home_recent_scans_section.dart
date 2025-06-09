@@ -23,7 +23,7 @@ class HomeRecentScansSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Recent Scans",
+              "Pemindaian Terbaru",
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -41,7 +41,7 @@ class HomeRecentScansSection extends StatelessWidget {
                 }
               },
               child: const Text(
-                'View All',
+                'Lihat Semua',
                 style: TextStyle(
                   color: AppColors.veniceBlue,
                   fontWeight: FontWeight.w500,
@@ -101,7 +101,7 @@ class HomeRecentScansSection extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Unable to load recent scans',
+                        'Tidak dapat memuat pemindaian terbaru',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.grey.shade600,
@@ -116,7 +116,7 @@ class HomeRecentScansSection extends StatelessWidget {
                               .fetchPredictions();
                         },
                         child: const Text(
-                          'Try Again',
+                          'Coba Lagi',
                           style: TextStyle(color: AppColors.angelBlue),
                         ),
                       ),
@@ -156,7 +156,7 @@ class HomeRecentScansSection extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'No scans yet',
+                          'Belum ada pemindaian',
                           style: theme.textTheme.titleMedium?.copyWith(
                             color: AppColors.angelBlue,
                             fontWeight: FontWeight.w500,
@@ -164,7 +164,7 @@ class HomeRecentScansSection extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Start scanning to see recent cases here',
+                          'Mulai pemindaian untuk melihat kasus terbaru di sini',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey.shade600,

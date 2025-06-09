@@ -78,7 +78,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Preview Image')),
+        appBar: AppBar(title: const Text('Tinjau Gambar')),
         backgroundColor: AppColors.bleachedCedar,
         body: SafeArea(
           child: Column(

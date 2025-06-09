@@ -26,7 +26,7 @@ class FundusAiLoadingState extends StatelessWidget {
                 const CircularProgressIndicator(color: Colors.white),
                 const SizedBox(height: 16),
                 Text(
-                  'Loading FundusAI Chat History...',
+                  'Memuat Riwayat Chat FundusAI...',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
