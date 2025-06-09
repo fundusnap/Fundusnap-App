@@ -10,11 +10,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return
-    //  Padding(
-    // padding: const EdgeInsets.only(top: 20, bottom: 8, left: 20, right: 20),
-    // child:
-    ListView(
+    return ListView(
       padding: const EdgeInsets.all(0),
       children: [
         Text(
