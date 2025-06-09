@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:sugeye/features/prediction/domain/entities/prediction.dart';
 import 'package:sugeye/features/prediction/domain/entities/prediction_summary.dart';
 import 'package:sugeye/features/prediction/domain/repositories/prediction_repository.dart';
@@ -59,11 +58,11 @@ class PredictionRepositoryImpl implements PredictionRepository {
         final List<dynamic> dataList = response.data['data'];
         return dataList.map((item) {
           // * TEMPORARY HARD CODED FIX
-          if (item['imageURL'] != null) {
-            print(item['imageURL']);
-            item['imageURL'] = _normalizeImageUrl(item['imageURL']);
-            debugPrint('🔧 Fixed URL: ${item['imageURL']}');
-          }
+          // if (item['imageURL'] != null) {
+          //   print(item['imageURL']);
+          //   item['imageURL'] = _normalizeImageUrl(item['imageURL']);
+          //   debugPrint('🔧 Fixed URL: ${item['imageURL']}');
+          // }
           return PredictionSummary.fromJson(item);
         }).toList();
       } else {
@@ -87,15 +86,15 @@ class PredictionRepositoryImpl implements PredictionRepository {
 
       if (response.statusCode == 200 && response.data['status'] == 'success') {
         // * TEMPORARY HARD CODED FIX
-        if (response.data['data']['imageURL'] != null) {
-          print(response.data['data']['imageURL']);
-          response.data['data']['imageURL'] = _normalizeImageUrl(
-            response.data['data']['imageURL'],
-          );
-          debugPrint(
-            '🔧 Fixed detail URL: ${response.data['data']['imageURL']}',
-          );
-        }
+        // if (response.data['data']['imageURL'] != null) {
+        //   print(response.data['data']['imageURL']);
+        //   response.data['data']['imageURL'] = _normalizeImageUrl(
+        //     response.data['data']['imageURL'],
+        //   );
+        //   debugPrint(
+        //     '🔧 Fixed detail URL: ${response.data['data']['imageURL']}',
+        //   );
+        // }
         return Prediction.fromJson(response.data['data']);
       } else {
         throw PredictionException(

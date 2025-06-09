@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sugeye/app/routing/routes.dart';
 import 'package:sugeye/app/themes/app_colors.dart';
@@ -52,134 +53,150 @@ class _SignInScreenState extends State<SignInScreen> {
             context.customShowErrorSnackBar(state.message);
           }
         },
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 30.0,
-              vertical: 20.0,
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Sign In',
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      color: AppColors.veniceBlue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  //?  email Field
-                  TextFormField(
-                    controller: _emailController,
-                    style: const TextStyle(color: AppColors.bleachedCedar),
-                    decoration: _inputDecoration(
-                      labelText: "Email",
-                      hintText: "Enter your email",
-                      icon: Icons.email_outlined,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          !value.contains('@')) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-
-                  //?  password Field
-                  TextFormField(
-                    controller: _passwordController,
-                    style: const TextStyle(color: AppColors.bleachedCedar),
-                    decoration: _inputDecoration(
-                      labelText: "Password",
-                      hintText: "Enter your password",
-                      icon: Icons.lock_outline,
-                      isPassword: true,
-                      obscureText: _obscureText,
-                      onObscureToggle: () => setState(() {
-                        _obscureText = !_obscureText;
-                      }),
-                    ),
-                    obscureText: _obscureText,
-                    validator: (value) {
-                      if (value == null || value.isEmpty || value.length < 6) {
-                        return 'Password must be at least 6 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 25),
-
-                  //?  submit Button
-                  BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, state) {
-                      if (state is AuthLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      return ElevatedButton(
-                        onPressed: _submitForm,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          backgroundColor: AppColors.angelBlue,
-                          foregroundColor: AppColors.bleachedCedar,
-                        ),
-                        child: const Text(
-                          'Sign In',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 20),
-
-                  // ? toggle Sign Up
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+        child:
+            // Center(
+            // child:
+            // SingleChildScrollView(
+            ListView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 30.0,
+                vertical: 20.0,
+              ),
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        'Need an account? ',
-                        style: TextStyle(
-                          color: AppColors.bleachedCedar.withAlpha(179),
-                        ),
+                      const Gap(120),
+                      Container(
+                        height: 210,
+                        alignment: Alignment.center,
+                        child: Image.asset("assets/logos/android12-logo.png"),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          // GoRouter.of(context).push(Routes.nestedSelectRoleScreen);
-                          GoRouter.of(context).goNamed(Routes.signUpScreen);
-                          // print('Navigate to Select Role');
-                        },
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: AppColors.veniceBlue,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      const Gap(10),
+                      Text(
+                        'Sign In',
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          color: AppColors.veniceBlue,
+                          fontWeight: FontWeight.bold,
                         ),
+                        textAlign: TextAlign.left,
+                      ),
+
+                      const Gap(20),
+
+                      //?  email Field
+                      TextFormField(
+                        controller: _emailController,
+                        style: const TextStyle(color: AppColors.bleachedCedar),
+                        decoration: _inputDecoration(
+                          labelText: "Email",
+                          hintText: "Enter your email",
+                          icon: Icons.email_outlined,
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              !value.contains('@')) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
+                      ),
+                      const Gap(20),
+
+                      //?  password Field
+                      TextFormField(
+                        controller: _passwordController,
+                        style: const TextStyle(color: AppColors.bleachedCedar),
+                        decoration: _inputDecoration(
+                          labelText: "Password",
+                          hintText: "Enter your password",
+                          icon: Icons.lock_outline,
+                          isPassword: true,
+                          obscureText: _obscureText,
+                          onObscureToggle: () => setState(() {
+                            _obscureText = !_obscureText;
+                          }),
+                        ),
+                        obscureText: _obscureText,
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              value.length < 6) {
+                            return 'Password must be at least 6 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                      const Gap(25),
+
+                      //?  submit Button
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          if (state is AuthLoading) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return ElevatedButton(
+                            onPressed: _submitForm,
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              backgroundColor: AppColors.angelBlue,
+                              foregroundColor: AppColors.bleachedCedar,
+                            ),
+                            child: const Text(
+                              'Sign In',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const Gap(20),
+
+                      // ? toggle Sign Up
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Need an account? ',
+                            style: TextStyle(
+                              color: AppColors.bleachedCedar.withAlpha(179),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // GoRouter.of(context).push(Routes.nestedSelectRoleScreen);
+                              GoRouter.of(context).goNamed(Routes.signUpScreen);
+                              // print('Navigate to Select Role');
+                            },
+                            child: const Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                color: AppColors.veniceBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        ),
       ),
+      // ),
       // ),
     );
   }
