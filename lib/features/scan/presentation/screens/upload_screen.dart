@@ -120,7 +120,8 @@ class _UploadScreenState extends State<UploadScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Upload Fundus Image'),
+          // title: const Text('Upload Fundus Image'),
+          title: const Text('Upload Image'),
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,

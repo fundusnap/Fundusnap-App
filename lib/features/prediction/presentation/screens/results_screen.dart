@@ -145,9 +145,9 @@ class ResultScreen extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              // TODO: Implement navigation to a more detailed report screen
+              // TODO: Implement navigation to chatbot
             },
-            child: const Text('View Detailed Report'),
+            child: const Text('Ask FundusAI'),
           ),
           const Gap(12),
           TextButton(

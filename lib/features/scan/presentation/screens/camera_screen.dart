@@ -243,7 +243,7 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Capture Fundus Image')),
+      appBar: AppBar(title: const Text('Capture Fundus')),
       body: _isCameraInitialized && _controller != null
           ? Stack(
               alignment: Alignment.center,

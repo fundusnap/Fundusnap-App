@@ -12,7 +12,7 @@ final ThemeData fundusnapLightTheme = ThemeData().copyWith(
   // textTheme: GoogleFonts.lexendTextTheme(),
   textTheme: GoogleFonts.plusJakartaSansTextTheme(),
 
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     toolbarHeight: 65,
     // backgroundColor: AppColors.angelBlue,
     backgroundColor: AppColors.angelBlue,
@@ -23,6 +23,7 @@ final ThemeData fundusnapLightTheme = ThemeData().copyWith(
       fontSize: 30,
       fontWeight: FontWeight.w500,
       color: AppColors.bleachedCedar,
+      fontFamily: GoogleFonts.poppins().fontFamily,
       // color: AppColors.veniceBlue,
     ),
   ),
