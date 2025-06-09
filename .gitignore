@@ -46,3 +46,7 @@ app.*.map.json
 
 
 .env
+
+
+# git remote add digination https://github.com/digination-alfamale-itb/fundusnap-app.git
+# git push digination main

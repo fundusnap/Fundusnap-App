@@ -15,10 +15,15 @@ class _CameraScreenState extends State<CameraScreen>
     with WidgetsBindingObserver {
   CameraController? _controller;
   List<CameraDescription>? _cameras;
+  List<CameraDescription>? _backCameras;
   bool _isCameraInitialized = false;
   bool _isTakingPicture = false;
   bool _isFlashOn = false;
-  int _selectedCameraIndex = 0;
+
+  double _currentZoomLevel = 1.0;
+  double _minZoomLevel = 1.0;
+  double _maxZoomLevel = 1.0;
+  double _baseScale = 1.0;
 
   @override
   void initState() {
@@ -39,7 +44,6 @@ class _CameraScreenState extends State<CameraScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     final CameraController? cameraController = _controller;
 
-    // ? App state changed before any chance initialize.
     if (cameraController == null || !cameraController.value.isInitialized) {
       return;
     }
@@ -47,7 +51,7 @@ class _CameraScreenState extends State<CameraScreen>
     if (state == AppLifecycleState.inactive) {
       cameraController.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      _initializeCamera(); //?  reinitialize the camera to fix potential issues
+      _initializeCamera();
     }
   }
 
@@ -62,18 +66,20 @@ class _CameraScreenState extends State<CameraScreen>
         return;
       }
 
-      // Use selected camera index instead of always finding back camera
-      CameraDescription selectedCamera;
-      if (_selectedCameraIndex < _cameras!.length) {
-        selectedCamera = _cameras![_selectedCameraIndex];
-      } else {
-        // Fallback to back camera or first available
-        _selectedCameraIndex = _cameras!.indexWhere(
-          (camera) => camera.lensDirection == CameraLensDirection.back,
+      _backCameras = _cameras!
+          .where((camera) => camera.lensDirection == CameraLensDirection.back)
+          .toList();
+
+      if (_backCameras == null || _backCameras!.isEmpty) {
+        _showErrorDialog(
+          "No back cameras found",
+          "This device does not have any back cameras available for medical imaging.",
         );
-        if (_selectedCameraIndex == -1) _selectedCameraIndex = 0;
-        selectedCamera = _cameras![_selectedCameraIndex];
+        return;
       }
+
+      // Get the main back camera (first one is usually the main camera)
+      CameraDescription selectedCamera = _backCameras!.first;
 
       _controller = CameraController(
         selectedCamera,
@@ -84,6 +90,11 @@ class _CameraScreenState extends State<CameraScreen>
 
       await _controller!.initialize();
 
+      // Initialize zoom levels
+      _minZoomLevel = await _controller!.getMinZoomLevel();
+      _maxZoomLevel = await _controller!.getMaxZoomLevel();
+      _currentZoomLevel = _minZoomLevel;
+
       // Restore flash state after camera initialization
       if (_isFlashOn) {
         await _controller!.setFlashMode(FlashMode.torch);
@@ -93,6 +104,10 @@ class _CameraScreenState extends State<CameraScreen>
       setState(() {
         _isCameraInitialized = true;
       });
+
+      debugPrint('Selected back camera: ${selectedCamera.name}');
+      debugPrint('Lens direction: ${selectedCamera.lensDirection}');
+      debugPrint('Sensor orientation: ${selectedCamera.sensorOrientation}');
     } on CameraException catch (e) {
       _showErrorDialog(
         "Camera Error",
@@ -106,7 +121,50 @@ class _CameraScreenState extends State<CameraScreen>
     }
   }
 
-  // Add flash toggle functionality
+  Future<void> _handleZoom(double scale) async {
+    if (_controller == null || !_controller!.value.isInitialized) return;
+
+    // Calculate new zoom level
+    double newZoomLevel = _baseScale * scale;
+
+    // Clamp zoom level to valid range
+    newZoomLevel = newZoomLevel.clamp(_minZoomLevel, _maxZoomLevel);
+
+    try {
+      await _controller!.setZoomLevel(newZoomLevel);
+      setState(() {
+        _currentZoomLevel = newZoomLevel;
+      });
+    } catch (e) {
+      debugPrint('Zoom error: $e');
+    }
+  }
+
+  /// Handle zoom start (when user starts pinching)
+  void _handleScaleStart(ScaleStartDetails details) {
+    _baseScale = _currentZoomLevel;
+  }
+
+  /// Handle zoom update (during pinching)
+  void _handleScaleUpdate(ScaleUpdateDetails details) {
+    _handleZoom(details.scale);
+  }
+
+  /// Reset zoom to minimum level
+  Future<void> _resetZoom() async {
+    if (_controller == null || !_controller!.value.isInitialized) return;
+
+    try {
+      await _controller!.setZoomLevel(_minZoomLevel);
+      setState(() {
+        _currentZoomLevel = _minZoomLevel;
+        _baseScale = _minZoomLevel;
+      });
+    } catch (e) {
+      debugPrint('Reset zoom error: $e');
+    }
+  }
+
   Future<void> _toggleFlash() async {
     if (_controller == null || !_controller!.value.isInitialized) return;
 
@@ -121,7 +179,6 @@ class _CameraScreenState extends State<CameraScreen>
         await _controller!.setFlashMode(FlashMode.off);
       }
     } catch (e) {
-      // Revert state if operation failed
       setState(() {
         _isFlashOn = !_isFlashOn;
       });
@@ -132,31 +189,6 @@ class _CameraScreenState extends State<CameraScreen>
         ).showSnackBar(SnackBar(content: Text('Failed to toggle flash: $e')));
       }
     }
-  }
-
-  // Add camera flip functionality
-  Future<void> _flipCamera() async {
-    if (_cameras == null || _cameras!.length <= 1) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No other cameras available')),
-      );
-      return;
-    }
-
-    // Dispose current controller
-    await _controller?.dispose();
-    _controller = null;
-
-    // Switch to next camera
-    _selectedCameraIndex = (_selectedCameraIndex + 1) % _cameras!.length;
-
-    setState(() {
-      _isCameraInitialized = false;
-      _isFlashOn = false; // Reset flash when switching cameras
-    });
-
-    // Initialize new camera
-    await _initializeCamera();
   }
 
   Future<void> _takePicture() async {
@@ -172,8 +204,8 @@ class _CameraScreenState extends State<CameraScreen>
       );
       return;
     }
+
     if (_controller!.value.isTakingPicture) {
-      // ? capture is already pending => do nothing.
       return;
     }
 
@@ -183,15 +215,13 @@ class _CameraScreenState extends State<CameraScreen>
 
     try {
       final XFile imageFile = await _controller!.takePicture();
-      //?  possibly pass the imageFile.path to the DisplayPictureScreen. ????
+
       if (mounted) {
         GoRouter.of(
           context,
         ).pushNamed(Routes.displayPicture, extra: imageFile.path).then((value) {
-          // ? executes when DisplayPictureScreen is popped.
-          // ? maybe re-initialize or refresh camera state if needed ??,
-        }); // ! especially if the user chose "Retake".
-        // _controller?.dispose();
+          _resetZoom();
+        });
       }
     } on CameraException catch (e) {
       if (mounted) {
@@ -226,9 +256,8 @@ class _CameraScreenState extends State<CameraScreen>
             ),
             onPressed: () {
               GoRouter.of(context).pop();
-              //? change this shit to gorouter , for now navigator aja
-              // ?  navigate back if error  critical (either use pop or goback , need testing!)
               if (title == "No cameras found" ||
+                  title == "No back cameras found" ||
                   (content.contains("CameraAccessDenied") &&
                       GoRouter.of(context).canPop())) {
                 GoRouter.of(context).pop();
@@ -243,7 +272,36 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Capture Fundus')),
+      appBar: AppBar(
+        title: const Text('Capture Fundus'),
+        actions: [
+          // Zoom level indicator
+          if (_isCameraInitialized)
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withAlpha(128),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '${_currentZoomLevel.toStringAsFixed(1)}x',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
       body: _isCameraInitialized && _controller != null
           ? Stack(
               alignment: Alignment.center,
@@ -275,123 +333,93 @@ class _CameraScreenState extends State<CameraScreen>
 
                     return SizedBox(
                       width: squareSize,
-                      child: CameraPreview(
-                        _controller!,
-                        child: Stack(
-                          children: [
-                            // Focus indicator in center
-                            Center(
-                              child: Container(
-                                width: 200,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.white.withAlpha(122),
-                                    width: 2,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                      child: GestureDetector(
+                        onScaleStart: _handleScaleStart,
+                        onScaleUpdate: _handleScaleUpdate,
+                        child: CameraPreview(
+                          _controller!,
+                          child: Stack(
+                            children: [
+                              Center(
                                 child: Container(
-                                  margin: const EdgeInsets.all(50),
+                                  width: 200,
+                                  height: 200,
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                      color: Colors.white.withAlpha(75),
-                                      width: 1,
+                                      color: Colors.white.withAlpha(122),
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Container(
+                                    margin: const EdgeInsets.all(50),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.white.withAlpha(75),
+                                        width: 1,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
 
-                            // Camera controls row - bottom positioned for easy thumb access
-                            Positioned(
-                              bottom: 30,
-                              left: 0,
-                              right: 0,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  // Flash toggle button - bottom left
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withAlpha(178),
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    child: IconButton(
-                                      icon: Icon(
-                                        _isFlashOn
-                                            ? Icons.flash_on
-                                            : Icons.flash_off,
-                                        color: _isFlashOn
-                                            ? Colors.yellow
-                                            : Colors.white,
-                                        size: 32,
-                                      ),
+                              // Camera controls
+                              Positioned(
+                                bottom: 80,
+                                left: 0,
+                                right: 0,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    // Flash toggle button
+                                    _buildControlButton(
+                                      icon: _isFlashOn
+                                          ? Icons.flash_on
+                                          : Icons.flash_off,
+                                      color: _isFlashOn
+                                          ? Colors.yellow
+                                          : Colors.white,
                                       onPressed: _toggleFlash,
                                       tooltip: _isFlashOn
                                           ? 'Turn off flash'
                                           : 'Turn on flash',
-                                      padding: const EdgeInsets.all(12),
                                     ),
-                                  ),
 
-                                  // Camera flip button - bottom right
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withAlpha(178),
-                                      borderRadius: BorderRadius.circular(30),
+                                    // Zoom reset button
+                                    _buildControlButton(
+                                      icon: Icons.zoom_out_map,
+                                      color: Colors.white,
+                                      onPressed: _resetZoom,
+                                      tooltip: 'Reset zoom',
                                     ),
-                                    child: IconButton(
-                                      icon: const Icon(
-                                        Icons.flip_camera_ios,
-                                        color: Colors.white,
-                                        size: 32,
-                                      ),
-                                      onPressed:
-                                          _cameras != null &&
-                                              _cameras!.length > 1
-                                          ? _flipCamera
-                                          : null,
-                                      tooltip: 'Flip camera',
-                                      padding: const EdgeInsets.all(12),
+                                  ],
+                                ),
+                              ),
+
+                              // Zoom instructions overlay
+                              Positioned(
+                                top: 20,
+                                left: 20,
+                                right: 20,
+                                child: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withAlpha(128),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: const Text(
+                                    'Pinch to zoom • Focus on the center guide',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                            // // Optional: Settings/info button at top right (less frequently used)
-                            // Positioned(
-                            //   top: 20,
-                            //   right: 20,
-                            //   child: Container(
-                            //     decoration: BoxDecoration(
-                            //       color: Colors.black.withOpacity(0.5),
-                            //       borderRadius: BorderRadius.circular(20),
-                            //     ),
-                            //     child: IconButton(
-                            //       icon: const Icon(
-                            //         Icons.info_outline,
-                            //         color: Colors.white,
-                            //         size: 24,
-                            //       ),
-                            //       onPressed: () {
-                            //         ScaffoldMessenger.of(context).showSnackBar(
-                            //           SnackBar(
-                            //             content: Text(
-                            //               'Resolution: ${_controller?.value.previewSize?.width.toInt()}x${_controller?.value.previewSize?.height.toInt()}\n'
-                            //               'Flash: ${_isFlashOn ? "On" : "Off"}\n'
-                            //               'Camera: ${_cameras != null && _selectedCameraIndex < _cameras!.length ? _cameras![_selectedCameraIndex].name : "Unknown"}',
-                            //             ),
-                            //             duration: const Duration(seconds: 3),
-                            //           ),
-                            //         );
-                            //       },
-                            //       tooltip: 'Camera info',
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -428,6 +456,8 @@ class _CameraScreenState extends State<CameraScreen>
                     : Text(
                         _cameras == null || _cameras!.isEmpty
                             ? 'No cameras found.'
+                            : _backCameras == null || _backCameras!.isEmpty
+                            ? 'No back cameras found for medical imaging.'
                             : 'Failed to initialize camera. Ensure permissions are granted.',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
@@ -448,6 +478,26 @@ class _CameraScreenState extends State<CameraScreen>
               child: const Icon(Icons.camera_alt, size: 40),
             )
           : null,
+    );
+  }
+
+  Widget _buildControlButton({
+    required IconData icon,
+    required Color color,
+    required VoidCallback? onPressed,
+    required String tooltip,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black.withAlpha(178),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: IconButton(
+        icon: Icon(icon, color: color, size: 32),
+        onPressed: onPressed,
+        tooltip: tooltip,
+        padding: const EdgeInsets.all(12),
+      ),
     );
   }
 }
