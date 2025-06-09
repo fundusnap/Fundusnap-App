@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sugeye/app/layout/destinations.dart';
 import 'package:sugeye/app/routing/routes.dart';
 
 class CasesEmptyState extends StatelessWidget {
@@ -28,7 +29,20 @@ class CasesEmptyState extends StatelessWidget {
           const SizedBox(height: 32),
           ElevatedButton.icon(
             onPressed: () {
-              GoRouter.of(context).pushNamed(Routes.scan);
+              final int scanIndex = destinations.indexWhere(
+                (d) => d.label == "Scan",
+              );
+              if (scanIndex != -1) {
+                final StatefulNavigationShellState shell =
+                    StatefulNavigationShell.of(context);
+                shell.goBranch(scanIndex);
+              } else {
+                print(
+                  "Error: 'Scan' destination index not found. Navigating with goNamed as fallback.",
+                );
+              }
+
+              // GoRouter.of(context).pushNamed(Routes.scan);
             },
             icon: const Icon(Icons.add_a_photo),
             label: const Text('Start Scanning'),

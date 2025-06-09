@@ -228,22 +228,6 @@ class RoutingService {
                       return CaseDetailScreen(predictionId: predictionId);
                     },
                   ),
-                  // GoRoute(
-                  //   parentNavigatorKey: _rootNavigatorKey,
-                  //   name: Routes.casesResult,
-                  //   path: Routes.casesResult,
-                  //   builder: (context, state) {
-                  //     Prediction? prediction = state.extra as Prediction?;
-                  //     if (prediction == null) {
-                  //       return const Scaffold(
-                  //         body: Center(
-                  //           child: Text("Prediction data not found."),
-                  //         ),
-                  //       );
-                  //     }
-                  //     return ResultScreen(prediction: prediction);
-                  //   },
-                  // ),
                 ],
               ),
             ],
