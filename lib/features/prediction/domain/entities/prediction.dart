@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:sugeye/features/prediction/domain/entities/prediction_tag.dart'; // Import PredictionTag
+import 'package:sugeye/features/prediction/domain/entities/detection_artifact.dart'; // Import PredictionTag
 
 class Prediction extends Equatable {
   final String id;
@@ -10,6 +11,8 @@ class Prediction extends Equatable {
   final String name;
   final String description;
   final String imageURL;
+  final String detectionURL;
+  final List<DetectionArtifact> detectionArtifacts;
 
   const Prediction({
     required this.id,
@@ -20,6 +23,8 @@ class Prediction extends Equatable {
     required this.name,
     required this.description,
     required this.imageURL,
+    required this.detectionURL,
+    required this.detectionArtifacts,
   });
 
   @override
@@ -32,6 +37,8 @@ class Prediction extends Equatable {
     name,
     description,
     imageURL,
+    detectionURL,
+    detectionArtifacts,
   ];
 
   factory Prediction.fromJson(Map<String, dynamic> json) {
@@ -40,6 +47,14 @@ class Prediction extends Equatable {
           .map(
             (tagJson) =>
                 PredictionTag.fromJson(tagJson as Map<String, dynamic>),
+          )
+          .toList();
+
+      final artifactsList = (json['detectionArtifacts'] as List)
+          .map(
+            (artifactJson) => DetectionArtifact.fromJson(
+              artifactJson as Map<String, dynamic>,
+            ),
           )
           .toList();
 
@@ -52,6 +67,8 @@ class Prediction extends Equatable {
         name: json['name'] as String,
         description: json['description'] as String,
         imageURL: json['imageURL'] as String,
+        detectionURL: json['detectionURL'] as String,
+        detectionArtifacts: artifactsList,
       );
     } catch (e) {
       throw FormatException('Failed to parse Prediction from JSON: $json', e);
@@ -68,6 +85,10 @@ class Prediction extends Equatable {
       'name': name,
       'description': description,
       'imageURL': imageURL,
+      'detectionURL': detectionURL,
+      'detectionArtifacts': detectionArtifacts
+          .map((artifact) => artifact.toJson())
+          .toList(),
     };
   }
 }
